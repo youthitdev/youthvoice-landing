@@ -44,11 +44,25 @@
 
   /* signature: color-block strip echoing the poster's block lettering */
   .blockstrip{ display:flex; gap:6px; margin:18px 0; }
-  .blockstrip span{ width:22px; height:34px; border-radius:4px; }
+  .blockstrip span{ width:22px; height:34px; border-radius:4px; display:inline-block; }
   .blockstrip span:nth-child(1){ background:var(--blue); }
   .blockstrip span:nth-child(2){ background:var(--red); }
   .blockstrip span:nth-child(3){ background:var(--yellow); }
   .blockstrip span:nth-child(4){ background:var(--maroon); }
+
+  @media (prefers-reduced-motion: no-preference){
+    .hero-title .blue, .hero-title .red{ display:inline-block; animation:sway 3.4s ease-in-out infinite; }
+    .hero-title .red{ animation-duration:3.8s; animation-delay:.25s; }
+    .ribbon{ animation:ribbon-sway 4.2s ease-in-out infinite; }
+    .blockstrip span{ animation:block-bob 2.6s ease-in-out infinite; }
+    .blockstrip span:nth-child(1){ animation-delay:0s; }
+    .blockstrip span:nth-child(2){ animation-delay:.15s; }
+    .blockstrip span:nth-child(3){ animation-delay:.3s; }
+    .blockstrip span:nth-child(4){ animation-delay:.45s; }
+  }
+  @keyframes sway{ 0%,100%{ transform:translateY(0) rotate(0deg); } 50%{ transform:translateY(-4px) rotate(-1.5deg); } }
+  @keyframes ribbon-sway{ 0%,100%{ transform:rotate(-2deg) translateY(0); } 50%{ transform:rotate(-4deg) translateY(-3px); } }
+  @keyframes block-bob{ 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(-7px); } }
 
   /* ---------- hero ---------- */
   .hero{ background:var(--pink); overflow:hidden; padding:52px 0 68px; }
