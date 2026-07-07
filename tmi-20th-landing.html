@@ -105,7 +105,12 @@
   /* ---------- support grid ---------- */
   .support-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:16px; margin-top:32px; }
   @media (min-width:760px){ .support-grid{ grid-template-columns:repeat(4,1fr); } }
-  .support-card{ border:2px solid var(--maroon); border-radius:16px; padding:22px 18px; text-align:left; }
+  .support-card{ border:2px solid var(--maroon); border-radius:16px; padding:22px 18px; text-align:left; transition:transform .2s ease, box-shadow .2s ease; }
+  .support-card:hover{ transform:translateY(-6px); box-shadow:0 10px 24px rgba(100,16,67,.16); }
+  @media (prefers-reduced-motion: no-preference){
+    .reveal{ opacity:0; transform:translateY(24px); transition:opacity .55s ease, transform .55s ease; }
+    .reveal.in{ opacity:1; transform:none; }
+  }
   .support-emoji{ font-size:28px; }
   .support-title{ font-weight:800; font-size:15.5px; margin:10px 0 4px; color:var(--maroon); }
   .support-desc{ font-size:13.5px; color:#6b5560; }
@@ -280,22 +285,22 @@
     <span class="eyebrow">🎁 지원 내용</span>
     <h2 class="section-title">함께하는 친구들에게 이런 걸 드려요</h2>
     <div class="support-grid">
-      <div class="support-card">
+      <div class="support-card reveal">
         <div class="support-emoji">💰</div>
         <div class="support-title">창작활동비 최대 40만원</div>
         <div class="support-desc">발견미션 수행 정도에 따라 지급, 표현 단계에서 자유롭게 사용</div>
       </div>
-      <div class="support-card">
+      <div class="support-card reveal">
         <div class="support-emoji">✨</div>
         <div class="support-title">예술가와의 만남</div>
         <div class="support-desc">막막할 때 도움이 되는 예술 분야 멘토링 지원</div>
       </div>
-      <div class="support-card">
+      <div class="support-card reveal">
         <div class="support-emoji">🧭</div>
         <div class="support-title">진로 탐색 기회 제공</div>
         <div class="support-desc">다양한 미션으로 나만의 방향을 찾아가요</div>
       </div>
-      <div class="support-card">
+      <div class="support-card reveal">
         <div class="support-emoji">🚌</div>
         <div class="support-title">지방 참가자 교통비</div>
         <div class="support-desc">비수도권 참여자는 오프라인 일정 교통비 지원</div>
@@ -379,6 +384,27 @@
   TMI 프로젝트 20기 · 나다움, 뭔데요? with 학교 밖 청소년<br>
   본 사업은 사랑의열매(사회복지공동모금회) 지원으로 운영됩니다.
 </footer>
+
+<script>
+  (function(){
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var cards = document.querySelectorAll('.reveal');
+    if (!('IntersectionObserver' in window)){ cards.forEach(function(c){ c.classList.add('in'); }); return; }
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if (e.isIntersecting){
+          var el = e.target;
+          var siblings = Array.prototype.slice.call(el.parentNode.querySelectorAll('.reveal'));
+          var i = siblings.indexOf(el);
+          el.style.transitionDelay = (Math.max(i,0) * 0.1) + 's';
+          el.classList.add('in');
+          io.unobserve(el);
+        }
+      });
+    }, { threshold: 0.15 });
+    cards.forEach(function(c){ io.observe(c); });
+  })();
+</script>
 
 </body>
 </html>

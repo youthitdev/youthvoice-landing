@@ -135,6 +135,12 @@
   .benefit-card{
     background:#fff; border-radius:18px; padding:20px 16px; text-align:left;
     box-shadow:0 4px 16px rgba(230,120,160,.12);
+    transition:transform .2s ease, box-shadow .2s ease;
+  }
+  .benefit-card:hover{ transform:translateY(-6px); box-shadow:0 12px 28px rgba(230,120,160,.28); }
+  @media (prefers-reduced-motion: no-preference){
+    .reveal{ opacity:0; transform:translateY(24px); transition:opacity .55s ease, transform .55s ease; }
+    .reveal.in{ opacity:1; transform:none; }
   }
   .benefit-emoji{ font-size:26px; }
   .benefit-title{ font-family:var(--font-display); font-size:15px; color:var(--navy); margin:8px 0 4px; }
@@ -301,14 +307,14 @@
     <span class="eyebrow">🎁 활동 혜택</span>
     <h2 class="section-title">참가팀에게 이런 걸 지원해요</h2>
     <div class="benefit-grid">
-      <div class="benefit-card"><div class="benefit-emoji">🏫</div><div class="benefit-title">전문 트레이닝 지원</div><div class="benefit-desc">댄스·보컬은 온·오프라인 병행, 밴드는 오프라인(서울) 트레이닝</div></div>
-      <div class="benefit-card"><div class="benefit-emoji">🎙️</div><div class="benefit-title">SM 아티스트 멘토링</div><div class="benefit-desc">현직 아티스트에게 직접 배우는 시간</div></div>
-      <div class="benefit-card"><div class="benefit-emoji">💻</div><div class="benefit-title">온라인 트레이닝 KIT</div><div class="benefit-desc">노트북, 액션캠 등 온라인 참여 환경 지원</div></div>
-      <div class="benefit-card"><div class="benefit-emoji">🏠</div><div class="benefit-title">연습공간 대관비 지원</div><div class="benefit-desc">팀별 연습 장소 마련을 도와드려요</div></div>
-      <div class="benefit-card"><div class="benefit-emoji">🎬</div><div class="benefit-title">팀별 영상 콘텐츠 제작</div><div class="benefit-desc">우리 팀만의 영상 콘텐츠를 제작해드려요</div></div>
-      <div class="benefit-card"><div class="benefit-emoji">💇‍♀️</div><div class="benefit-title">최종 공연 스타일링</div><div class="benefit-desc">헤어·메이크업·스타일링, 무대 전반 지원</div></div>
-      <div class="benefit-card"><div class="benefit-emoji">📜</div><div class="benefit-title">수료증 발급</div><div class="benefit-desc">모든 프로그램에 성실히 참여한 참여자에 한함</div></div>
-      <div class="benefit-card"><div class="benefit-emoji">🚀</div><div class="benefit-title">후속 프로그램 지원</div><div class="benefit-desc">활동 이후로도 이어지는 기회</div></div>
+      <div class="benefit-card reveal"><div class="benefit-emoji">🏫</div><div class="benefit-title">전문 트레이닝 지원</div><div class="benefit-desc">댄스·보컬은 온·오프라인 병행, 밴드는 오프라인(서울) 트레이닝</div></div>
+      <div class="benefit-card reveal"><div class="benefit-emoji">🎙️</div><div class="benefit-title">SM 아티스트 멘토링</div><div class="benefit-desc">현직 아티스트에게 직접 배우는 시간</div></div>
+      <div class="benefit-card reveal"><div class="benefit-emoji">💻</div><div class="benefit-title">온라인 트레이닝 KIT</div><div class="benefit-desc">노트북, 액션캠 등 온라인 참여 환경 지원</div></div>
+      <div class="benefit-card reveal"><div class="benefit-emoji">🏠</div><div class="benefit-title">연습공간 대관비 지원</div><div class="benefit-desc">팀별 연습 장소 마련을 도와드려요</div></div>
+      <div class="benefit-card reveal"><div class="benefit-emoji">🎬</div><div class="benefit-title">팀별 영상 콘텐츠 제작</div><div class="benefit-desc">우리 팀만의 영상 콘텐츠를 제작해드려요</div></div>
+      <div class="benefit-card reveal"><div class="benefit-emoji">💇‍♀️</div><div class="benefit-title">최종 공연 스타일링</div><div class="benefit-desc">헤어·메이크업·스타일링, 무대 전반 지원</div></div>
+      <div class="benefit-card reveal"><div class="benefit-emoji">📜</div><div class="benefit-title">수료증 발급</div><div class="benefit-desc">모든 프로그램에 성실히 참여한 참여자에 한함</div></div>
+      <div class="benefit-card reveal"><div class="benefit-emoji">🚀</div><div class="benefit-title">후속 프로그램 지원</div><div class="benefit-desc">활동 이후로도 이어지는 기회</div></div>
     </div>
   </div>
 </section>
@@ -416,6 +422,27 @@
   <div class="fbrand">2026 SMile Music Festival</div>
   청소년 음악 꿈나무 지원 프로그램
 </footer>
+
+<script>
+  (function(){
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var cards = document.querySelectorAll('.reveal');
+    if (!('IntersectionObserver' in window)){ cards.forEach(function(c){ c.classList.add('in'); }); return; }
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if (e.isIntersecting){
+          var el = e.target;
+          var siblings = Array.prototype.slice.call(el.parentNode.querySelectorAll('.reveal'));
+          var i = siblings.indexOf(el);
+          el.style.transitionDelay = (Math.max(i,0) * 0.08) + 's';
+          el.classList.add('in');
+          io.unobserve(el);
+        }
+      });
+    }, { threshold: 0.15 });
+    cards.forEach(function(c){ io.observe(c); });
+  })();
+</script>
 
 </body>
 </html>
