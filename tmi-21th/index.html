@@ -329,7 +329,8 @@
     display:block;
   }
   .info-row .v{font-size:16px; font-weight:600;}
-  .info-row .v small{display:block; font-weight:400; color:#AEC2D4; font-size:13px; margin-top:4px;}
+  .info-row .v small{display:block; font-weight:400; color:#AEC2D4; font-size:13px; margin-top:4px; line-height:1.6;}
+  .info-row .v small b{color:var(--yellow); font-weight:700;}
 
   .selection-panel{
     background:rgba(255,255,255,0.04);
@@ -412,9 +413,9 @@
   .stop:nth-child(3) .flag{background:var(--sky-deep);}
   .stop:nth-child(4) .flag{background:var(--green);}
   .stop:nth-child(5) .flag{background:#5A6E82;}
-  .stop .date{font-family:'Jua',sans-serif; font-size:13px; color:var(--yellow); margin-bottom:4px;}
-  .stop .title{font-weight:700; font-size:15px; margin-bottom:2px; color:#fff;}
-  .stop .meta{font-size:12px; color:#AEC2D4;}
+  .stop .date{font-family:'Jua',sans-serif; font-size:13px; color:var(--yellow); margin-bottom:4px; word-break:keep-all;}
+  .stop .title{font-weight:700; font-size:15px; margin-bottom:2px; color:#fff; word-break:keep-all;}
+  .stop .meta{font-size:12px; color:#AEC2D4; word-break:keep-all;}
 
   @media (prefers-reduced-motion: reduce){
     .stop, .stop .flag{transition:none;}
@@ -600,6 +601,7 @@
     content:"";
     position:absolute; inset:0;
     background:radial-gradient(circle at 50% 0%, rgba(255,222,61,0.18), transparent 55%);
+    pointer-events:none;
   }
   .final-cta h2{
     font-size:clamp(30px,4.6vw,46px);
@@ -666,6 +668,7 @@
     .path-line{display:none;}
     .stop{display:flex; align-items:center; gap:16px; text-align:left;}
     .stop .flag{margin:0; flex-shrink:0;}
+    .stop-text{flex:1; min-width:0;}
     .step-card, .step-card.reverse{grid-template-columns:1fr;}
     .step-card.reverse .step-media{order:0;}
     .step-media{min-height:180px;}
@@ -684,7 +687,7 @@
       <span class="eyebrow">📢 2026 TMI 프로젝트 21기 모집</span>
       <h1 class="display">나다운 게<br/>뭔데?!</h1>
       <span class="sub-tag display">with. 학교 밖 청소년</span>
-      <p class="lede">정답은 없어요. 실패하고 헤매도 나만의 속도와 방향으로 나아가는 것, 그 자체가 의미있으니까요. 12주 동안 오직 ‘나’에게 집중하는 시간, TMI 프로젝트가 함께합니다.</p>
+      <p class="lede">정답은 없어요.<br/>헤매도 나만의 속도와 방향으로 나아가는 것, 그 자체가 의미있으니까요.<br/>12주 동안 오직 ‘나’에게 집중하는 시간,<br/>TMI 프로젝트가 함께합니다.</p>
       <div class="badge-row">
         <span class="badge">🎯 대상 <b>전국 학교 밖 청소년 15~19세</b></span>
         <span class="badge">👥 모집인원 <b>15명</b></span>
@@ -738,7 +741,13 @@
           </div>
           <div class="info-row span-full">
             <span class="k">모집대상</span>
-            <div class="v">전국 학교 밖 청소년 15~19세<small>2012년생~2006년생(만 19세까지) · 학교 밖 청소년 / 학업중단 숙려제 참여 청소년 / 대안교육기관·대안학교 재학 청소년</small></div>
+            <div class="v">전국 학교 밖 청소년 15~19세
+              <small>
+                2012년생 ~ 2006년생 (만 19세까지)<br/>
+                학교 밖 청소년 / 학업중단 숙려제 참여 청소년 / 대안교육기관·대안학교 재학 청소년<br/>
+                <b>+ 비수도권 거주자 가산점 부여</b>
+              </small>
+            </div>
           </div>
           <div class="info-row span-full last">
             <span class="k">활동기간</span>
@@ -777,33 +786,43 @@
       <div class="path-stops">
         <div class="stop">
           <div class="flag">🚩</div>
-          <div class="date">9.17(목)~9.18(금)</div>
-          <div class="title">오리엔테이션</div>
-          <div class="meta">1박 2일 · 서울 오프라인</div>
+          <div class="stop-text">
+            <div class="date">9.17(목)~9.18(금)</div>
+            <div class="title">오리엔테이션</div>
+            <div class="meta">1박 2일 · 서울 오프라인</div>
+          </div>
         </div>
         <div class="stop">
           <div class="flag">🔎</div>
-          <div class="date">4주간</div>
-          <div class="title">발견미션 기간</div>
-          <div class="meta">개별 진행 · 미션 5개 수행</div>
+          <div class="stop-text">
+            <div class="date">4주간</div>
+            <div class="title">발견미션 기간</div>
+            <div class="meta">개별 진행 · 미션 5개 수행</div>
+          </div>
         </div>
         <div class="stop">
           <div class="flag">💬</div>
-          <div class="date">10.22(목)</div>
-          <div class="title">중간워크숍</div>
-          <div class="meta">온라인</div>
+          <div class="stop-text">
+            <div class="date">10.22(목)</div>
+            <div class="title">중간워크숍</div>
+            <div class="meta">온라인</div>
+          </div>
         </div>
         <div class="stop">
           <div class="flag">🎨</div>
-          <div class="date">10.29(목)</div>
-          <div class="title">창작워크숍 w.멘토링</div>
-          <div class="meta">오프라인 · 5주 창작활동 시작</div>
+          <div class="stop-text">
+            <div class="date">10.29(목)</div>
+            <div class="title">창작워크숍 w.멘토링</div>
+            <div class="meta">오프라인 · 5주 창작활동 시작</div>
+          </div>
         </div>
         <div class="stop">
           <div class="flag">🖼</div>
-          <div class="date">12.10(목)</div>
-          <div class="title">최종공유회</div>
-          <div class="meta">전시 · 오프라인</div>
+          <div class="stop-text">
+            <div class="date">12.10(목)</div>
+            <div class="title">최종공유회</div>
+            <div class="meta">전시 · 오프라인</div>
+          </div>
         </div>
       </div>
     </div>
@@ -900,7 +919,7 @@
       </div>
       <div class="faq-item">
         <div class="faq-q"><span><span class="qmark">Q</span> 1박2일 오리엔테이션은 어떻게 진행되나요?</span><span class="faq-arrow">▾</span></div>
-        <div class="faq-a"><div class="faq-a-inner">다양한 직업을 가진 어른들을 만나 진로 스토리를 듣고 궁금한 점을 자유롭게 질문할 수 있어요. 오리엔테이션을 마친 후에는 함께 이동하며, 필요한 준비물은 추후 공지될 예정입니다.</div></div>
+        <div class="faq-a"><div class="faq-a-inner">프로젝트의 전체적인 과정에 대한 안내와 함께, 나다움을 탐색할 수 있는 강연과 워크숍이 진행될 예정입니다. 이후에는 다같이 숙소로 이동하며, 필요한 준비물은 추후 안내됩니다.</div></div>
       </div>
       <div class="faq-item">
         <div class="faq-q"><span><span class="qmark">Q</span> 활동비는 얼마나, 언제 지급되나요?</span><span class="faq-arrow">▾</span></div>
@@ -912,7 +931,7 @@
       </div>
       <div class="faq-item">
         <div class="faq-q"><span><span class="qmark">Q</span> 활동 기간은 어떻게 보내나요?</span><span class="faq-arrow">▾</span></div>
-        <div class="faq-a"><div class="faq-a-inner">공식적으로 [OT 및 진로캠프 · 중간워크숍 · 창작워크숍 · 공유회(전시)] 총 4번 직접 만나게 됩니다. 이외에는 기간 내에 스스로 시간을 정해서 활동하면 됩니다.</div></div>
+        <div class="faq-a"><div class="faq-a-inner">공식적으로 [OT 및 진로캠프 · 중간워크숍 · 창작워크숍 · 공유회(전시)] 총 4번 온·오프라인으로 만나게 됩니다. 이외에는 기간 내에 스스로 시간을 정해서 활동하면 됩니다.</div></div>
       </div>
       <div class="faq-item">
         <div class="faq-q"><span><span class="qmark">Q</span> 지원서에는 어떤 질문이 있나요?</span><span class="faq-arrow">▾</span></div>
