@@ -93,8 +93,15 @@
     font-size:16px;
     padding:6px 14px;
     border-radius:8px;
-    transform:rotate(-2deg);
     margin-bottom:18px;
+    animation:tag-wiggle 2.6s ease-in-out infinite;
+  }
+  @keyframes tag-wiggle{
+    0%, 100%{ transform:rotate(-2deg) translateY(0); }
+    50%{ transform:rotate(2deg) translateY(-3px); }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .hero .sub-tag{animation:none; transform:rotate(-2deg);}
   }
   .hero p.lede{
     color:#eaf6ff;
