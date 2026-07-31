@@ -302,18 +302,25 @@
     border-radius:24px;
     padding:8px;
   }
+  .ticket-split{
+    display:grid;
+    grid-template-columns:1.15fr 0.85fr;
+    border-radius:18px;
+    overflow:hidden;
+  }
   .ticket-inner{
     display:grid;
     grid-template-columns:repeat(2,1fr);
     gap:0;
-    border-radius:18px;
-    overflow:hidden;
   }
   .info-row{
     padding:22px 26px;
     border-bottom:1px solid rgba(255,255,255,0.08);
     border-right:1px solid rgba(255,255,255,0.08);
   }
+  .info-row:nth-child(2){border-right:none;}
+  .info-row.span-full{grid-column:1/-1; border-right:none;}
+  .info-row.last{border-bottom:none;}
   .info-row .k{
     font-family:'Jua',sans-serif;
     color:var(--yellow);
@@ -323,6 +330,42 @@
   }
   .info-row .v{font-size:16px; font-weight:600;}
   .info-row .v small{display:block; font-weight:400; color:#AEC2D4; font-size:13px; margin-top:4px;}
+
+  .selection-panel{
+    background:rgba(255,255,255,0.04);
+    border-left:1px solid rgba(255,255,255,0.1);
+    padding:24px 26px;
+  }
+  .selection-panel-head{
+    font-family:'Jua',sans-serif;
+    color:#9FB3C6;
+    font-size:13px;
+    margin-bottom:20px;
+  }
+  .sel-timeline{
+    border-left:2px dashed rgba(255,222,61,0.35);
+    margin-left:5px;
+    padding-left:20px;
+  }
+  .sel-node{position:relative; padding-bottom:24px;}
+  .sel-node:last-child{padding-bottom:0;}
+  .sel-dot{
+    position:absolute;
+    left:-25px; top:3px;
+    width:10px; height:10px;
+    border-radius:50%;
+    background:var(--yellow);
+    box-shadow:0 0 0 4px #16334F;
+  }
+  .sel-node .k{
+    font-family:'Jua',sans-serif;
+    color:var(--yellow);
+    font-size:13px;
+    margin-bottom:5px;
+    display:block;
+  }
+  .sel-node .v{font-size:15px; font-weight:700;}
+  .sel-node .v small{display:block; font-weight:400; color:#AEC2D4; font-size:12px; margin-top:4px;}
   .info-note{
     text-align:center;
     font-size:13px;
@@ -601,7 +644,10 @@
   @media (max-width:860px){
     .badge-row{justify-content:center;}
     .sign-list{grid-template-columns:1fr;}
+    .ticket-split{grid-template-columns:1fr;}
+    .selection-panel{border-left:none; border-top:1px solid rgba(255,255,255,0.1);}
     .ticket-inner{grid-template-columns:1fr;}
+    .info-row:nth-child(2){border-right:none; border-bottom:1px solid rgba(255,255,255,0.08);}
     .path-stops{grid-template-columns:1fr; gap:24px;}
     .path-line{display:none;}
     .stop{display:flex; align-items:center; gap:16px; text-align:left;}
@@ -666,34 +712,44 @@
       <p>아래 일정과 대상을 확인하고 신청서를 준비해보세요<br/><b class="emph">모든 활동 일정은 필참이에요</b></p>
     </div>
     <div class="ticket">
-      <div class="ticket-inner">
-        <div class="info-row">
-          <span class="k">모집일정</span>
-          <div class="v">~2026.8.26.(수) 23:59까지</div>
+      <div class="ticket-split">
+        <div class="ticket-inner">
+          <div class="info-row">
+            <span class="k">모집일정</span>
+            <div class="v">~2026.8.26.(수) 23:59까지</div>
+          </div>
+          <div class="info-row">
+            <span class="k">모집인원</span>
+            <div class="v">15명</div>
+          </div>
+          <div class="info-row span-full">
+            <span class="k">모집대상</span>
+            <div class="v">전국 학교 밖 청소년 15~19세<small>2012년생~2006년생(만 19세까지) · 학교 밖 청소년 / 학업중단 숙려제 참여 청소년 / 대안교육기관·대안학교 재학 청소년</small></div>
+          </div>
+          <div class="info-row span-full last">
+            <span class="k">활동기간</span>
+            <div class="v">2026.9.17.(목) ~ 12.10.(목)<small>약 3개월</small></div>
+          </div>
         </div>
-        <div class="info-row">
-          <span class="k">모집인원</span>
-          <div class="v">15명</div>
-        </div>
-        <div class="info-row">
-          <span class="k">모집대상</span>
-          <div class="v">전국 학교 밖 청소년 15~19세<small>2012년생~2006년생(만 19세까지) · 학교 밖 청소년 / 학업중단 숙려제 참여 청소년 / 대안교육기관·대안학교 재학 청소년</small></div>
-        </div>
-        <div class="info-row">
-          <span class="k">인터뷰 대상자 발표</span>
-          <div class="v">2026.8.28.(금)<small>선정 시 개별 연락</small></div>
-        </div>
-        <div class="info-row">
-          <span class="k">개별 인터뷰</span>
-          <div class="v">2026.9.4.(금)<small>온라인 줌 진행</small></div>
-        </div>
-        <div class="info-row">
-          <span class="k">최종 선정 발표</span>
-          <div class="v">2026.9.7.(월)<small>선정 시 개별 연락</small></div>
-        </div>
-        <div class="info-row">
-          <span class="k">활동기간</span>
-          <div class="v">2026.9.17.(목) ~ 12.10.(목)<small>약 3개월</small></div>
+        <div class="selection-panel">
+          <div class="selection-panel-head">📋 선발 프로세스</div>
+          <div class="sel-timeline">
+            <div class="sel-node">
+              <span class="sel-dot"></span>
+              <span class="k">인터뷰 대상자 발표</span>
+              <div class="v">2026.8.28.(금)<small>선정 시 개별 연락</small></div>
+            </div>
+            <div class="sel-node">
+              <span class="sel-dot"></span>
+              <span class="k">개별 인터뷰</span>
+              <div class="v">2026.9.4.(금)<small>온라인 줌 진행</small></div>
+            </div>
+            <div class="sel-node">
+              <span class="sel-dot"></span>
+              <span class="k">최종 선정 발표</span>
+              <div class="v">2026.9.7.(월)<small>선정 시 개별 연락</small></div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
