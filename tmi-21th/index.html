@@ -149,33 +149,64 @@
   }
   .hook-answer{
     text-align:center;
-    background:var(--navy);
+    background:linear-gradient(135deg, var(--navy) 0%, var(--navy-2) 100%);
     border-radius:28px;
-    padding:44px 30px;
+    padding:40px 30px;
     color:#fff;
     position:relative;
     overflow:hidden;
     margin-top:40px;
+    box-shadow:0 20px 40px rgba(11,30,51,0.25);
+    transform:scale(0.96);
+    opacity:0;
+    transition:transform .6s cubic-bezier(.26,1.2,.5,1), opacity .5s ease;
   }
+  .hook-answer.in-view{transform:scale(1); opacity:1;}
   .hook-answer::before{
     content:"";
-    position:absolute; inset:0;
-    background:radial-gradient(circle at 20% 20%, rgba(255,222,61,0.18), transparent 50%);
+    position:absolute;
+    top:-60px; right:-60px;
+    width:220px; height:220px;
+    background:radial-gradient(circle, rgba(255,222,61,0.35) 0%, transparent 70%);
+  }
+  .hook-answer::after{
+    content:"";
+    position:absolute;
+    bottom:-80px; left:-40px;
+    width:200px; height:200px;
+    background:radial-gradient(circle, rgba(255,62,134,0.25) 0%, transparent 70%);
   }
   .hook-answer h3{
     font-family:'Jua',sans-serif;
-    font-size:clamp(22px,3vw,30px);
+    font-size:clamp(24px,3.6vw,34px);
     color:var(--yellow);
-    margin:0 0 22px;
+    margin:0;
     position:relative;
+    z-index:1;
   }
-  .chip-row{display:flex; flex-wrap:wrap; gap:12px; justify-content:center; position:relative;}
-  .chip{
-    background:rgba(255,255,255,0.12);
-    border:1px solid rgba(255,255,255,0.3);
-    padding:10px 18px;
-    border-radius:999px;
-    font-size:15px;
+  .hook-answer h3 .highlight{
+    position:relative;
+    z-index:0;
+    display:inline-block;
+    color:var(--navy-2);
+    padding:0 8px;
+  }
+  .hook-answer h3 .highlight::before{
+    content:"";
+    position:absolute;
+    left:0; top:10%;
+    width:0%;
+    height:80%;
+    background:var(--yellow);
+    border-radius:6px;
+    z-index:-1;
+    transition:width .5s ease .45s;
+  }
+  .hook-answer.in-view h3 .highlight::before{width:100%;}
+
+  @media (prefers-reduced-motion: reduce){
+    .hook-answer{opacity:1; transform:scale(1); transition:none;}
+    .hook-answer h3 .highlight::before{transition:none; width:100%;}
   }
 
   /* ---------- RESONANCE SIGNPOSTS ---------- */
@@ -197,11 +228,31 @@
   .sign-item:nth-child(4){background:var(--green);}
   .sign-item:nth-child(5){background:var(--wood-deep);}
   .sign-item:nth-child(6){background:var(--navy);}
-  .sign-item span.num{
-    font-family:'Jua',sans-serif;
-    opacity:0.55;
-    font-size:14px;
-    min-width:20px;
+  .sign-item .check{
+    font-family:-apple-system,sans-serif;
+    display:flex; align-items:center; justify-content:center;
+    width:26px; height:26px;
+    min-width:26px;
+    border-radius:7px;
+    background:rgba(255,255,255,0.22);
+    border:2px solid rgba(255,255,255,0.6);
+    font-size:16px;
+    font-weight:900;
+    line-height:1;
+    transform:scale(0);
+    transition:transform .35s cubic-bezier(.34,1.56,.64,1);
+  }
+  .sign-item:nth-child(1) .check{background:rgba(11,30,51,0.12); border-color:rgba(11,30,51,0.4);}
+  .sign-list.in-view .sign-item .check{transform:scale(1);}
+  .sign-item:nth-child(1) .check{transition-delay:.05s;}
+  .sign-item:nth-child(2) .check{transition-delay:.15s;}
+  .sign-item:nth-child(3) .check{transition-delay:.25s;}
+  .sign-item:nth-child(4) .check{transition-delay:.35s;}
+  .sign-item:nth-child(5) .check{transition-delay:.45s;}
+  .sign-item:nth-child(6) .check{transition-delay:.55s;}
+
+  @media (prefers-reduced-motion: reduce){
+    .sign-item .check{transform:scale(1); transition:none;}
   }
 
   /* ---------- INFO PANEL (모집안내) ---------- */
@@ -213,6 +264,12 @@
   .info-section .head{text-align:center; margin-bottom:40px;}
   .info-section .head h2{font-size:clamp(26px,3.6vw,34px); color:#fff; margin:16px 0 6px;}
   .info-section .head p{color:#B9C7D6; margin:0;}
+  .info-section .head p .emph{
+    display:inline-block;
+    color:var(--yellow);
+    font-weight:800;
+    margin-top:8px;
+  }
   .ticket{
     background:linear-gradient(180deg,#16334F,#0F2740);
     border:2px dashed rgba(255,222,61,0.4);
@@ -555,23 +612,18 @@
   <div class="wrap">
     <div class="hook-head">
       <span class="eyebrow on-light">🤔 학교 밖에서 이런 고민, 해본 적 있나요?</span>
-      <h2 class="display">'나다운 게' 뭔지 잘 모르겠다면</h2>
+      <h2 class="display">아래 중 하나라도 해당된다면</h2>
     </div>
     <div class="sign-list">
-      <div class="sign-item"><span class="num">01</span>학교를 나온 후, 갑자기 주어진 시간을 어떻게 써야 할지 막막하다면?</div>
-      <div class="sign-item"><span class="num">02</span>내가 진짜 하고 싶은 게 뭔지 모르겠다면?</div>
-      <div class="sign-item"><span class="num">03</span>학교 밖 또래 친구를 만나고 싶었다면?</div>
-      <div class="sign-item"><span class="num">04</span>글, 그림, 사진, 영상, 음악 등 창작 활동을 해보고 싶었다면?</div>
-      <div class="sign-item"><span class="num">05</span>나는 어떤 걸 좋아하는 사람인지 알고 싶다면?</div>
-      <div class="sign-item"><span class="num">06</span>지루한 일상, 지친 나! 터닝포인트가 필요하다면?</div>
+      <div class="sign-item"><span class="check">✓</span>학교를 나온 후, 갑자기 주어진 시간을 어떻게 써야 할지 막막하다면?</div>
+      <div class="sign-item"><span class="check">✓</span>내가 진짜 하고 싶은 게 뭔지 모르겠다면?</div>
+      <div class="sign-item"><span class="check">✓</span>학교 밖 또래 친구를 만나고 싶었다면?</div>
+      <div class="sign-item"><span class="check">✓</span>글, 그림, 사진, 영상, 음악 등 창작 활동을 해보고 싶었다면?</div>
+      <div class="sign-item"><span class="check">✓</span>나는 어떤 걸 좋아하는 사람인지 알고 싶다면?</div>
+      <div class="sign-item"><span class="check">✓</span>지루한 일상, 지친 나! 터닝포인트가 필요하다면?</div>
     </div>
     <div class="hook-answer">
-      <h3 class="display">여러분을 위해, TMI 프로젝트가 찾아왔습니다!</h3>
-      <div class="chip-row">
-        <span class="chip">💡 12주 동안 오직 ‘나’에게 집중</span>
-        <span class="chip">👭 비슷한 고민을 가진 친구들과 함께</span>
-        <span class="chip">🎨 새로운 경험과 창작활동으로 나를 탐색</span>
-      </div>
+      <h3 class="display">지금, <span class="highlight">TMI 프로젝트</span>에 지원해보세요!</h3>
     </div>
   </div>
 </section>
@@ -582,7 +634,7 @@
     <div class="head">
       <span class="eyebrow on-light">📢 모집 안내 &amp; 일정</span>
       <h2 class="display">모집부터 최종공유회까지</h2>
-      <p>아래 일정과 대상을 확인하고 신청서를 준비해보세요 · 모든 활동 일정은 필참이에요</p>
+      <p>아래 일정과 대상을 확인하고 신청서를 준비해보세요<br/><b class="emph">모든 활동 일정은 필참이에요</b></p>
     </div>
     <div class="ticket">
       <div class="ticket-inner">
@@ -830,6 +882,42 @@
       item.classList.toggle('open', !wasOpen);
     });
   });
+
+  (function(){
+    var el = document.querySelector('.hook-answer');
+    if(!el) return;
+    if('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(entry){
+          if(entry.isIntersecting){
+            el.classList.add('in-view');
+            io.unobserve(el);
+          }
+        });
+      }, {threshold:0.3});
+      io.observe(el);
+    } else {
+      el.classList.add('in-view');
+    }
+  })();
+
+  (function(){
+    var el = document.querySelector('.sign-list');
+    if(!el) return;
+    if('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(entry){
+          if(entry.isIntersecting){
+            el.classList.add('in-view');
+            io.unobserve(el);
+          }
+        });
+      }, {threshold:0.3});
+      io.observe(el);
+    } else {
+      el.classList.add('in-view');
+    }
+  })();
 </script>
 
 </body>
