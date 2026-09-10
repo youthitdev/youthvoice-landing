@@ -112,14 +112,34 @@
     .hero-stats{ grid-template-columns:1fr 1fr; }
   }
 
+  .hero .wrap{ position:relative; }
   .hero-chain{
     position:absolute;
-    right:-60px; top:40px;
-    width:420px; height:420px;
+    right:80px; top:36px;
+    width:300px; height:300px;
     opacity:0.9;
     pointer-events:none;
   }
-  @media (max-width:900px){ .hero-chain{ display:none; } }
+  @media (max-width:960px){ .hero-chain{ display:none; } }
+  .hero-chain rect{ transform-box:fill-box; transform-origin:center; }
+  .hero-chain .link-a{ animation:link-float-a 6s ease-in-out infinite; }
+  .hero-chain .link-b{ animation:link-float-b 6s ease-in-out infinite; animation-delay:.35s; }
+  .hero-chain .link-c{ animation:link-float-c 6s ease-in-out infinite; animation-delay:.7s; }
+  @keyframes link-float-a{
+    0%,100%{ transform:rotate(-18deg) translateY(0); }
+    50%{ transform:rotate(-15deg) translateY(-10px); }
+  }
+  @keyframes link-float-b{
+    0%,100%{ transform:rotate(18deg) translateY(0); }
+    50%{ transform:rotate(21deg) translateY(10px); }
+  }
+  @keyframes link-float-c{
+    0%,100%{ transform:rotate(-18deg) translateY(0); }
+    50%{ transform:rotate(-15deg) translateY(-10px); }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .hero-chain rect{ animation:none !important; }
+  }
 
   /* ---------- SECTION shared ---------- */
   section{ padding:64px 0; }
@@ -371,13 +391,13 @@
         <div class="label">임직원·현직자 진로 멘토링</div>
       </div>
     </div>
-  </div>
 
-  <svg class="hero-chain" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-    <rect x="70" y="130" width="90" height="150" rx="45" stroke="#E8722C" stroke-width="14" transform="rotate(-18 115 205)"/>
-    <rect x="160" y="130" width="90" height="150" rx="45" stroke="#F5B301" stroke-width="14" transform="rotate(18 205 205)"/>
-    <rect x="240" y="130" width="90" height="150" rx="45" stroke="#2C7A4B" stroke-width="14" transform="rotate(-18 285 205)"/>
-  </svg>
+    <svg class="hero-chain" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <rect class="link-a" x="70" y="130" width="90" height="150" rx="45" stroke="#E8722C" stroke-width="14"/>
+      <rect class="link-b" x="160" y="130" width="90" height="150" rx="45" stroke="#F5B301" stroke-width="14"/>
+      <rect class="link-c" x="240" y="130" width="90" height="150" rx="45" stroke="#2C7A4B" stroke-width="14"/>
+    </svg>
+  </div>
 </header>
 
 <main class="wrap">
