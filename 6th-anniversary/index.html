@@ -1,1 +1,421 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>유스보이스 6주년 축하 한마디</title>
+<meta name="description" content="유스보이스의 여섯 번째 생일에 축하 한마디를 남겨 주세요.">
+<meta property="og:title" content="유스보이스 6주년 축하 한마디">
+<meta property="og:description" content="유스보이스의 여섯 번째 생일에 축하 한마디를 남겨 주세요.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Gowun+Dodum&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<style>
+  :root{
+    --sky:#3450F5; --sky-deep:#2238C9; --six:#4764FF;
+    --ink:#14163A; --lemon:#FFE45C;
+    --display:'Black Han Sans','Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+    --body:'Gowun Dodum','Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%;margin:0}
+  body{background:var(--sky);color:#fff;font-family:var(--body);overflow:hidden;-webkit-font-smoothing:antialiased}
 
+  .six{position:fixed;inset:0;display:grid;place-items:center;font-family:var(--display);
+    font-size:min(96vh,130vw);line-height:1;color:var(--six);user-select:none;pointer-events:none;z-index:0}
+
+  header{position:fixed;z-index:1;top:calc(env(safe-area-inset-top,0px) + 28px);left:28px;right:28px;max-width:34rem;pointer-events:none}
+  h1{font-family:var(--display);font-weight:400;font-size:clamp(2.1rem,5.4vw,3.8rem);line-height:1.08;margin:0 0 .7rem;letter-spacing:-.01em}
+  .lede{font-size:1.06rem;line-height:1.65;margin:0;max-width:26rem}
+  .count{margin:.9rem 0 0;font-size:.95rem;opacity:.78}
+
+  #stage{position:fixed;inset:0;z-index:2;overflow:hidden}
+  .bubble{position:absolute;top:100%;left:0;max-width:min(300px,72vw);padding:0 0 12px;border:0;background:none;
+    font:inherit;text-align:left;cursor:pointer;will-change:transform;-webkit-tap-highlight-color:transparent}
+  .bubble-inner{position:relative;background:var(--c);color:var(--ink);padding:14px 18px;border-radius:22px;
+    font-size:1.02rem;line-height:1.55;box-shadow:0 6px 0 var(--sky-deep);
+    animation:sway var(--sw) ease-in-out infinite alternate;word-break:keep-all;overflow-wrap:anywhere}
+  .bubble-inner::after{content:"";position:absolute;bottom:-11px;left:24px;border:12px solid transparent;border-top-color:var(--c);border-bottom:0}
+  .bubble-inner.tail-r::after{left:auto;right:24px}
+  .bubble-inner p{margin:0;white-space:pre-line;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
+  .bubble-inner .more{display:block;margin-top:6px;font-size:.84rem;opacity:.6}
+  .bubble:focus-visible{outline:none}
+  .bubble:focus-visible .bubble-inner{outline:3px solid #fff;outline-offset:3px}
+  @keyframes sway{from{transform:translateX(calc(var(--sx) * -1)) rotate(-1.4deg)}to{transform:translateX(var(--sx)) rotate(1.4deg)}}
+
+  .composer{position:fixed;z-index:4;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 20px);
+    width:min(640px,calc(100% - 32px));background:#fff;border-radius:26px;
+    padding:12px 10px 10px 20px;box-shadow:0 8px 0 var(--sky-deep)}
+  .composer .row{display:flex;gap:10px;align-items:flex-end}
+  .composer .name{display:block;width:100%;border:0;border-bottom:1px solid #E6E8F7;font:inherit;font-size:.95rem;color:var(--ink);
+    background:transparent;padding:2px 10px 8px 0;margin-bottom:4px;outline:none}
+  .composer .name::placeholder{color:#7C7FA6}
+  .composer:focus-within{outline:3px solid var(--lemon);outline-offset:3px}
+  .composer textarea{flex:1;border:0;resize:none;font:inherit;font-size:1.05rem;line-height:1.5;color:var(--ink);background:transparent;
+    height:2.6em;max-height:7.6em;padding:8px 0;outline:none}
+  .composer textarea::placeholder{color:#7C7FA6}
+  .bubble-inner .from{display:block;margin-top:6px;font-size:.86rem;opacity:.7}
+  .btn{font-family:var(--display);font-size:1.08rem;border:0;border-radius:18px;padding:12px 20px;cursor:pointer;white-space:nowrap}
+  .btn-send{background:var(--ink);color:var(--lemon)}
+  .btn:disabled{opacity:.5;cursor:default}
+  .btn:focus-visible{outline:3px solid var(--lemon);outline-offset:2px}
+
+  .toast{position:fixed;z-index:6;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 150px);transform:translate(-50%,10px);
+    background:var(--ink);color:#fff;padding:10px 18px;border-radius:999px;font-size:.95rem;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;max-width:calc(100% - 32px);text-align:center}
+  .toast.show{opacity:1;transform:translate(-50%,0)}
+
+  .demo{position:fixed;z-index:5;top:calc(env(safe-area-inset-top,0px) + 12px);right:12px;background:var(--lemon);color:var(--ink);
+    font-size:.82rem;padding:6px 12px;border-radius:999px}
+
+  dialog{border:0;border-radius:26px;padding:28px;width:min(520px,calc(100% - 32px));color:var(--ink);background:#fff;font-family:var(--body);box-shadow:0 10px 0 var(--sky-deep)}
+  dialog::backdrop{background:rgba(20,22,58,.55)}
+  dialog .full{margin:0;font-size:1.15rem;line-height:1.7;white-space:pre-line;word-break:keep-all;overflow-wrap:anywhere;max-height:60vh;overflow:auto}
+  dialog .from{margin:16px 0 0;font-size:1rem}
+  dialog .date{margin:4px 0 0;font-size:.9rem;color:#6B6E94}
+  dialog .actions{display:flex;gap:10px;justify-content:flex-end;margin-top:22px;flex-wrap:wrap}
+  .btn-ghost{background:#EEF0FF;color:var(--ink)}
+  .btn-danger{background:#FFE1E1;color:#B3261E}
+  dialog h2{font-family:var(--display);font-weight:400;font-size:1.5rem;margin:0 0 12px}
+  dialog input{width:100%;font:inherit;font-size:1.05rem;padding:12px 14px;border:2px solid #D9DCF5;border-radius:14px;color:var(--ink)}
+  dialog input:focus{outline:none;border-color:var(--sky)}
+  .err{color:#B3261E;font-size:.9rem;margin:8px 0 0;min-height:1.2em}
+
+  .admin-toggle{position:fixed;z-index:5;top:calc(env(safe-area-inset-top,0px) + 16px);right:16px;background:var(--ink);color:var(--lemon)}
+  .panel{position:fixed;z-index:7;top:0;right:0;bottom:0;width:min(420px,100%);background:#fff;color:var(--ink);display:flex;flex-direction:column;
+    padding-top:env(safe-area-inset-top,0px);transform:translateX(100%);transition:transform .25s ease;box-shadow:-8px 0 0 var(--sky-deep)}
+  .panel.open{transform:none}
+  .panel-head{display:flex;align-items:center;justify-content:space-between;padding:20px 20px 12px}
+  .panel-head h2{font-family:var(--display);font-weight:400;font-size:1.4rem;margin:0}
+  .panel ul{list-style:none;margin:0;padding:0 20px calc(env(safe-area-inset-bottom,0px) + 20px);overflow:auto;flex:1}
+  .panel li{padding:14px 0;border-top:1px solid #E6E8F7;display:grid;grid-template-columns:1fr auto;gap:6px 12px;align-items:start}
+  .panel li p{margin:0;line-height:1.55;white-space:pre-line;word-break:keep-all;overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+  .panel li small{grid-column:1;color:#6B6E94}
+  .panel li .btn{grid-row:1 / span 2;grid-column:2;font-size:.92rem;padding:8px 14px}
+  .panel .empty{color:#6B6E94;border:0}
+
+  @media (max-width:600px){
+    header{top:calc(env(safe-area-inset-top,0px) + 20px);left:20px;right:20px}
+    .lede{font-size:.98rem}
+    .bubble-inner{font-size:.96rem;padding:12px 15px}
+  }
+  @media (prefers-reduced-motion:reduce){ .bubble-inner{animation:none} .toast,.panel{transition:none} }
+</style>
+</head>
+<body>
+  <div class="six" aria-hidden="true">6</div>
+
+  <header>
+    <h1>유스보이스가<br>여섯 살이 됐어요</h1>
+    <p class="lede">6년 동안 함께해 준 여러분 덕분이에요.<br>축하 한마디 남겨주시면 유스보이스에 큰 힘이 됩니다.</p>
+    <p class="count" id="count" aria-live="polite"></p>
+  </header>
+
+  <main id="stage" aria-label="축하 메시지"></main>
+
+  <form class="composer" id="composer" autocomplete="off">
+    <label for="name" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">이름 (선택)</label>
+    <input id="name" class="name" type="text" maxlength="20" placeholder="이름 (비우면 익명)">
+    <div class="row">
+      <label for="msg" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">축하 한마디</label>
+      <textarea id="msg" rows="1" placeholder="유스보이스에게 축하 한마디"></textarea>
+      <button class="btn btn-send" id="sendBtn" type="submit">띄우기</button>
+    </div>
+  </form>
+
+  <div class="toast" id="toast" role="status"></div>
+
+  <dialog id="msgDialog">
+    <p class="full" id="msgFull"></p>
+    <p class="from" id="msgFrom"></p>
+    <p class="date" id="msgDate"></p>
+    <div class="actions">
+      <button class="btn btn-danger" id="msgDelete" type="button" hidden>이 한마디 삭제</button>
+      <button class="btn btn-ghost" id="msgClose" type="button">닫기</button>
+    </div>
+  </dialog>
+
+  <dialog id="loginDialog">
+    <h2>관리자 확인</h2>
+    <form id="loginForm">
+      <input id="pw" type="password" placeholder="관리자 비밀번호" autocomplete="current-password">
+      <p class="err" id="loginErr"></p>
+      <div class="actions">
+        <button class="btn btn-ghost" type="button" id="loginCancel">취소</button>
+        <button class="btn btn-send" type="submit">확인</button>
+      </div>
+    </form>
+  </dialog>
+
+  <button class="btn admin-toggle" id="adminToggle" type="button" hidden>관리 목록</button>
+  <aside class="panel" id="panel" aria-label="메시지 관리">
+    <div class="panel-head">
+      <h2 id="panelTitle">메시지 관리</h2>
+      <button class="btn btn-ghost" id="panelClose" type="button">닫기</button>
+    </div>
+    <ul id="adminList"></ul>
+  </aside>
+
+<script>
+/* ===== 설정: Supabase 프로젝트 값으로 바꿔 주세요 ===== */
+const SUPABASE_URL = 'https://gosunknickkewreylstj.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdvc3Vua25pY2trZXdyZXlsc3RqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIyNDYxNzMsImV4cCI6MjA5NzgyMjE3M30.93wePt6jaw1VNq6NQODeSof7xl8evyCxDWzk_8ORoSM';
+/* ===================================================== */
+
+const TABLE = 'anniversary_messages';
+const DEMO = SUPABASE_URL.startsWith('YOUR_') || !window.supabase;
+const COLORS = ['#FFFFFF','#FFE45C','#FFB3D1','#A8F0CC','#D4CCFF'];
+const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+const $ = id => document.getElementById(id);
+const stage = $('stage'), ta = $('msg'), sendBtn = $('sendBtn');
+
+let messages = [];       // {id, content, created_at}
+let priority = [];       // 새로 들어온 메시지 id (먼저 띄움)
+let cursor = 0;
+let adminPw = null;
+let sending = false, lastSent = 0;
+
+/* ---------- 데이터 ---------- */
+function supaApi(){
+  const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  return {
+    async list(){
+      const { data, error } = await sb.from(TABLE).select('id,content,author,created_at').order('created_at',{ascending:true});
+      if (error) throw error; return data;
+    },
+    async add(content, author){
+      const { data, error } = await sb.from(TABLE).insert({ content, author }).select('id,content,author,created_at').single();
+      if (error) throw error; return data;
+    },
+    async checkAdmin(pw){
+      const { data, error } = await sb.rpc('check_anniversary_admin', { admin_password: pw });
+      if (error) throw error; return data === true;
+    },
+    async remove(id, pw){
+      const { error } = await sb.rpc('delete_anniversary_message', { msg_id: id, admin_password: pw });
+      if (error) throw error;
+    },
+    subscribe(onInsert, onDelete){
+      sb.channel('anniversary')
+        .on('postgres_changes',{event:'INSERT',schema:'public',table:TABLE}, p => onInsert(p.new))
+        .on('postgres_changes',{event:'DELETE',schema:'public',table:TABLE}, p => onDelete(p.old.id))
+        .subscribe();
+    }
+  };
+}
+function demoApi(){
+  const samples = [['여섯 살 생일 축하해요! 🎉','TMI 21기 지민'],['유스보이스 덕분에 처음으로 제 이야기를 무대에서 했어요. 고마워요.',null],['앞으로 60주년까지 쭉!','서준'],
+    ['선생님들 늘 고생 많으세요 💛',null],['TMI 프로젝트 하면서 친구를 많이 만났어요.\n그때가 제일 즐거웠어요.','유스잇 참여자'],['축하합니다 🎂',null],['청소년의 목소리를 계속 들어 주세요!','하은']];
+  const now = Date.now();
+  let data = samples.map(([c,a],i)=>({ id:'demo-'+i, content:c, author:a, created_at:new Date(now - (samples.length-i)*3600e3).toISOString() }));
+  return {
+    async list(){ return data.slice(); },
+    async add(content, author){ const m={id:'demo-'+Date.now(),content,author,created_at:new Date().toISOString()}; data.push(m); return m; },
+    async checkAdmin(pw){ return pw === 'demo'; },
+    async remove(id){ data = data.filter(m=>m.id!==id); },
+    subscribe(){}
+  };
+}
+const api = DEMO ? demoApi() : supaApi();
+
+/* ---------- 상태 ---------- */
+function upsert(m){
+  if (messages.some(x=>x.id===m.id)) return false;
+  messages.push(m); updateCount(); renderAdmin(); return true;
+}
+function removeLocal(id){
+  messages = messages.filter(m=>m.id!==id);
+  priority = priority.filter(x=>x!==id);
+  stage.querySelectorAll(`.bubble[data-id="${CSS.escape(id)}"]`).forEach(el=>el.remove());
+  updateCount(); renderAdmin();
+}
+function updateCount(){
+  $('count').textContent = messages.length ? `지금까지 ${messages.length.toLocaleString('ko-KR')}개의 축하 메시지가 도착했어요.` : '아직 도착한 축하 메시지가 없어요. 첫 번째로 남겨 주세요.';
+}
+function nextMessage(){
+  while (priority.length){
+    const m = messages.find(x=>x.id===priority.shift());
+    if (m) return m;
+  }
+  if (!messages.length) return null;
+  const onStage = new Set([...stage.querySelectorAll('.bubble')].map(el=>el.dataset.id));
+  for (let i=0;i<messages.length;i++){
+    const m = messages[cursor++ % messages.length];
+    if (!onStage.has(m.id) || messages.length <= onStage.size) return m;
+  }
+  return messages[cursor++ % messages.length];
+}
+function colorFor(id){
+  let h=0; for (const ch of String(id)) h=(h*31+ch.charCodeAt(0))>>>0;
+  return COLORS[h % COLORS.length];
+}
+const fromText = m => m.author ? `${m.author} 드림` : '익명';
+const fmtDate = s => new Date(s).toLocaleString('ko-KR',{year:'numeric',month:'long',day:'numeric',hour:'2-digit',minute:'2-digit'});
+
+/* ---------- 말풍선 ---------- */
+function spawn(m, { center=false, progress=0 } = {}){
+  if (!m) return;
+  const el = document.createElement('button');
+  el.type='button'; el.className='bubble'; el.dataset.id=m.id;
+  el.setAttribute('aria-label',`${fromText(m)}의 축하 메시지: ${m.content.slice(0,40)}`);
+  const inner = document.createElement('div');
+  inner.className = 'bubble-inner' + (Math.random()<.5 ? ' tail-r' : '');
+  inner.style.setProperty('--c', colorFor(m.id));
+  inner.style.setProperty('--sw', (2.8+Math.random()*2).toFixed(2)+'s');
+  inner.style.setProperty('--sx', Math.round(5+Math.random()*9)+'px');
+  const p = document.createElement('p'); p.textContent = m.content;
+  inner.append(p);
+  if (m.content.length > 70 || m.content.split('\n').length > 4){
+    const more=document.createElement('span'); more.className='more'; more.textContent='눌러서 전체 보기'; inner.append(more);
+  }
+  const from=document.createElement('span'); from.className='from'; from.textContent=fromText(m); inner.append(from);
+  el.append(inner); stage.append(el);
+
+  const W = stage.clientWidth, H = stage.clientHeight, bw = el.offsetWidth, bh = el.offsetHeight;
+  el.style.left = (center ? (W-bw)/2 : 12 + Math.random()*Math.max(0, W-bw-24)) + 'px';
+
+  let anim;
+  if (reduceMotion){
+    el.style.top = (H*0.2 + Math.random()*Math.max(0, H*0.5 - bh)) + 'px';
+    anim = el.animate([{opacity:0},{opacity:1,offset:.1},{opacity:1,offset:.9},{opacity:0}],{duration:9000});
+  } else {
+    const speed = 38 + Math.random()*26;                 // px / 초
+    const dist = H + bh + 60;
+    anim = el.animate([{transform:'translateY(0)'},{transform:`translateY(${-dist}px)`}],
+                      {duration: dist/speed*1000, easing:'linear'});
+    if (progress) anim.currentTime = anim.effect.getTiming().duration * progress;
+  }
+  anim.onfinish = () => el.remove();
+  el._anim = anim;
+  el.addEventListener('pointerenter', ()=>anim.pause());
+  el.addEventListener('pointerleave', ()=>{ if (!$('msgDialog').open) anim.play(); });
+  el.addEventListener('focus', ()=>anim.pause());
+  el.addEventListener('blur', ()=>{ if (!$('msgDialog').open) anim.play(); });
+  el.addEventListener('click', ()=>openMessage(m, anim));
+}
+const maxOnStage = () => stage.clientWidth < 600 ? 5 : 9;
+setInterval(()=>{
+  if (document.hidden || !messages.length) return;
+  if (stage.querySelectorAll('.bubble').length < maxOnStage()) spawn(nextMessage());
+}, 1900);
+
+/* ---------- 보내기 ---------- */
+function autosize(){ ta.style.height='auto'; ta.style.height=Math.min(ta.scrollHeight, 7.6*16)+'px'; }
+ta.addEventListener('input', autosize);
+ta.addEventListener('keydown', e=>{
+  if (e.key==='Enter' && !e.shiftKey && !e.isComposing){ e.preventDefault(); send(); }
+});
+$('composer').addEventListener('submit', e=>{ e.preventDefault(); send(); });
+
+async function send(){
+  const text = ta.value.trim();
+  if (!text){ ta.focus(); return; }
+  if (sending) return;
+  if (Date.now()-lastSent < 5000){ toast('5초 뒤에 다시 띄울 수 있어요'); return; }
+  sending = true; sendBtn.disabled = true;
+  try{
+    const author = $('name').value.trim().slice(0,20) || null;
+    const m = await api.add(text, author);
+    ta.value=''; autosize(); lastSent=Date.now();
+    upsert(m);
+    priority = priority.filter(x=>x!==m.id);
+    spawn(m, { center:true });
+    toast('하늘로 띄웠어요');
+  }catch(err){
+    console.error(err);
+    toast('보내지 못했어요. 인터넷 연결을 확인하고 다시 눌러 주세요.');
+  }finally{
+    sending=false; sendBtn.disabled=false;
+  }
+}
+
+let toastTimer;
+function toast(msg){
+  const t=$('toast'); t.textContent=msg; t.classList.add('show');
+  clearTimeout(toastTimer); toastTimer=setTimeout(()=>t.classList.remove('show'), 2600);
+}
+
+/* ---------- 메시지 크게 보기 ---------- */
+let openAnim=null, openId=null;
+function openMessage(m, anim){
+  openAnim=anim; openId=m.id; anim?.pause();
+  $('msgFull').textContent=m.content;
+  $('msgFrom').textContent=fromText(m);
+  $('msgDate').textContent=fmtDate(m.created_at);
+  $('msgDelete').hidden = !adminPw;
+  $('msgDialog').showModal();
+}
+$('msgClose').onclick = ()=>$('msgDialog').close();
+$('msgDialog').addEventListener('close', ()=>{ openAnim?.play(); openAnim=null; });
+$('msgDelete').onclick = async ()=>{
+  const id=openId;
+  if (await removeMessage(id)) $('msgDialog').close();
+};
+
+/* ---------- 관리자 ---------- */
+async function removeMessage(id){
+  if (!adminPw) return false;
+  if (!confirm('이 한마디를 삭제할까요? 삭제하면 되돌릴 수 없어요.')) return false;
+  try{ await api.remove(id, adminPw); removeLocal(id); toast('삭제했어요'); return true; }
+  catch(err){ console.error(err); toast('삭제하지 못했어요. 비밀번호가 바뀌었는지 확인해 주세요.'); return false; }
+}
+function renderAdmin(){
+  if (!adminPw) return;
+  const list=$('adminList'); list.replaceChildren();
+  $('panelTitle').textContent = `메시지 관리 (${messages.length})`;
+  if (!messages.length){ const li=document.createElement('li'); li.className='empty'; li.textContent='아직 메시지가 없어요.'; list.append(li); return; }
+  [...messages].reverse().forEach(m=>{
+    const li=document.createElement('li');
+    const p=document.createElement('p'); p.textContent=m.content;
+    const s=document.createElement('small'); s.textContent=`${fromText(m)}, ${fmtDate(m.created_at)}`;
+    const b=document.createElement('button'); b.type='button'; b.className='btn btn-danger'; b.textContent='삭제';
+    b.onclick=()=>removeMessage(m.id);
+    li.append(p,b,s); list.append(li);
+  });
+}
+if (new URLSearchParams(location.search).has('admin')){
+  $('loginDialog').showModal();
+  $('pw').focus();
+}
+$('loginCancel').onclick = ()=>$('loginDialog').close();
+$('loginForm').addEventListener('submit', async e=>{
+  e.preventDefault();
+  const pw=$('pw').value;
+  if (!pw){ $('loginErr').textContent='비밀번호를 입력해 주세요.'; return; }
+  try{
+    if (await api.checkAdmin(pw)){
+      adminPw=pw; $('loginDialog').close();
+      $('adminToggle').hidden=false; renderAdmin(); $('panel').classList.add('open');
+    } else $('loginErr').textContent='비밀번호가 맞지 않아요.';
+  }catch(err){ console.error(err); $('loginErr').textContent='확인하지 못했어요. 잠시 후 다시 시도해 주세요.'; }
+});
+$('adminToggle').onclick = ()=>$('panel').classList.toggle('open');
+$('panelClose').onclick = ()=>$('panel').classList.remove('open');
+
+/* ---------- 시작 ---------- */
+(async function init(){
+  if (DEMO){
+    const b=document.createElement('div'); b.className='demo';
+    b.textContent='미리보기 모드: 메시지가 저장되지 않아요'; document.body.append(b);
+  }
+  updateCount();
+  try{
+    const data = await api.list();
+    data.forEach(m=>messages.push(m));
+    updateCount(); renderAdmin();
+    // 처음부터 화면이 비어 보이지 않게, 몇 개는 중간 높이에서 시작
+    const first = Math.min(messages.length, maxOnStage()-2);
+    for (let i=0;i<first;i++) spawn(nextMessage(), { progress: reduceMotion ? 0 : 0.15 + Math.random()*0.6 });
+  }catch(err){
+    console.error(err);
+    $('count').textContent='메시지를 불러오지 못했어요. 새로고침해 주세요.';
+  }
+  api.subscribe(
+    m => { if (upsert(m)) priority.push(m.id); },
+    id => removeLocal(id)
+  );
+})();
+</script>
+</body>
+</html>
