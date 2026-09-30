@@ -149,6 +149,7 @@
     <p class="date" id="msgDate"></p>
     <div class="actions">
       <button class="btn btn-danger" id="msgDelete" type="button" hidden>이 한마디 삭제</button>
+      <button class="btn btn-send" id="msgImage" type="button">이미지로 저장</button>
       <button class="btn btn-ghost" id="msgClose" type="button">닫기</button>
     </div>
   </dialog>
@@ -365,9 +366,9 @@ function toast(msg){
 }
 
 /* ---------- 메시지 크게 보기 ---------- */
-let openAnim=null, openId=null;
+let openAnim=null, openId=null, openMsg=null;
 function openMessage(m, anim){
-  openAnim=anim; openId=m.id; anim?.pause();
+  openAnim=anim; openId=m.id; openMsg=m; anim?.pause();
   $('msgFull').textContent=m.content;
   $('msgFrom').textContent=fromText(m);
   $('msgDate').textContent=fmtDate(m.created_at);
@@ -379,6 +380,78 @@ $('msgDialog').addEventListener('close', ()=>{ openAnim?.play(); openAnim=null; 
 $('msgDelete').onclick = async ()=>{
   const id=openId;
   if (await removeMessage(id)) $('msgDialog').close();
+};
+
+/* ---------- 이미지로 저장 ---------- */
+function wrapLines(ctx, text, maxW){
+  const out=[];
+  for (const para of text.split('\n')){
+    if (!para.trim()){ out.push(''); continue; }
+    let line='';
+    for (const word of para.split(/(\s+)/)){
+      if (!word) continue;
+      const test=line+word;
+      if (ctx.measureText(test).width <= maxW){ line=test; continue; }
+      if (line.trim()){ out.push(line.trimEnd()); line=''; }
+      if (/^\s+$/.test(word)) continue;
+      for (const ch of word){                       // 한 단어가 너무 길면 글자 단위로 자르기
+        if (ctx.measureText(line+ch).width > maxW && line){ out.push(line); line=ch; }
+        else line+=ch;
+      }
+    }
+    out.push(line.trimEnd());
+  }
+  return out;
+}
+function roundRect(ctx,x,y,w,h,rad){
+  ctx.beginPath(); ctx.moveTo(x+rad,y); ctx.arcTo(x+w,y,x+w,y+h,rad); ctx.arcTo(x+w,y+h,x,y+h,rad);
+  ctx.arcTo(x,y+h,x,y,rad); ctx.arcTo(x,y,x+w,y,rad); ctx.closePath();
+}
+async function saveImage(m){
+  const DISPLAY="'Black Han Sans','Apple SD Gothic Neo','Malgun Gothic',sans-serif";
+  const BODY="'Gowun Dodum','Apple SD Gothic Neo','Malgun Gothic',sans-serif";
+  try{ await Promise.all([document.fonts.load("44px 'Gowun Dodum'", m.content), document.fonts.load("60px 'Black Han Sans'", '유스보이스 6주년')]); }catch{}
+  const W=1080, PAD=90, BW=W-PAD*2, IN=64, LH=70;
+  const cv=document.createElement('canvas'), ctx=cv.getContext('2d');
+  ctx.font=`44px ${BODY}`;
+  const lines=wrapLines(ctx, m.content, BW-IN*2);
+  const bh=IN*2 + lines.length*LH + 56;
+  const H=Math.max(1080, 260 + bh + 40 + 150);
+  cv.width=W; cv.height=H;
+
+  ctx.fillStyle='#3450F5'; ctx.fillRect(0,0,W,H);
+  ctx.textAlign='left'; ctx.textBaseline='alphabetic';
+  ctx.fillStyle='#fff'; ctx.font=`60px ${DISPLAY}`; ctx.fillText('유스보이스 6주년', PAD, 170);
+
+  const by = Math.max(260, (H - bh)/2);
+  const color = colorFor(m.id);
+  ctx.fillStyle='#2238C9'; roundRect(ctx, PAD, by+12, BW, bh, 48); ctx.fill();
+  ctx.fillStyle=color; roundRect(ctx, PAD, by, BW, bh, 48); ctx.fill();
+  ctx.beginPath(); ctx.moveTo(PAD+70, by+bh-2); ctx.lineTo(PAD+130, by+bh-2); ctx.lineTo(PAD+84, by+bh+44); ctx.closePath(); ctx.fill();
+
+  ctx.fillStyle='#14163A'; ctx.font=`44px ${BODY}`;
+  lines.forEach((ln,i)=>ctx.fillText(ln, PAD+IN, by+IN+44+i*LH));
+  ctx.globalAlpha=.7; ctx.font=`36px ${BODY}`;
+  ctx.fillText(fromText(m), PAD+IN, by+IN+lines.length*LH+60);
+  ctx.globalAlpha=1;
+
+  ctx.fillStyle='#fff'; ctx.font=`34px ${BODY}`; ctx.textAlign='right';
+  ctx.fillText('6년 동안 함께해 준 여러분 덕분입니다!', W-PAD, H-80);
+
+  const blob = await new Promise(res=>cv.toBlob(res,'image/png'));
+  const name = `유스보이스_6주년_${(m.author||'익명').replace(/[\\/:*?"<>|\s]+/g,'_')}.png`;
+  const file = new File([blob], name, { type:'image/png' });
+  if (navigator.canShare?.({ files:[file] }) && matchMedia('(pointer:coarse)').matches){
+    try{ await navigator.share({ files:[file] }); return; }catch(e){ if (e.name==='AbortError') return; }
+  }
+  download(blob, name);
+}
+$('msgImage').onclick = async ()=>{
+  if (!openMsg) return;
+  const b=$('msgImage'); b.disabled=true; b.textContent='만드는 중…';
+  try{ await saveImage(openMsg); }
+  catch(err){ console.error(err); toast('이미지를 만들지 못했어요. 다시 눌러 주세요.'); }
+  finally{ b.disabled=false; b.textContent='이미지로 저장'; }
 };
 
 /* ---------- 관리자 ---------- */
