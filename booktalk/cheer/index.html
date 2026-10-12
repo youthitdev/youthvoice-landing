@@ -3,109 +3,75 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>바람직한 실패작 모음집 · 실패담 남기기</title>
-<meta name="description" content="북토크 관객이 익명으로 실패담을 남기는 곳">
+<title>바람직한 실패작 모음집 · 작가들에게 한마디</title>
+<meta name="description" content="북토크를 마치며 학교 밖 청소년 작가들에게 응원을 남기는 곳">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Gowun+Dodum&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
 :root{
-  --paper:#EEF0E9;      /* 갱지 */
-  --sheet:#FBFCF7;      /* 원고지 칸 */
-  --grid:#AFCFB9;       /* 원고지 녹색 줄 */
-  --grid-strong:#6E9F82;
-  --ink:#1F2A44;        /* 만년필 잉크 */
-  --muted:#5E6878;
-  --line:#D6DCD0;
-  --seal:#D2283C;       /* 인주 */
-  --focus:#2F5BD3;
+  --cover:#22304F;      /* 책 뒤표지 */
+  --cover-deep:#18233B;
+  --foil:#E2B34A;       /* 금박 */
+  --page:#F3F1E8;
+  --ink:#1F2A44;
+  --soft:#AEB8CC;
+  --rule:rgba(226,179,74,.35);
+  --focus:#8FB4FF;
   --serif:'Gowun Batang','Nanum Myeongjo','AppleMyungjo',serif;
   --sans:'Gowun Dodum','Apple SD Gothic Neo','Malgun Gothic',system-ui,sans-serif;
 }
 *{box-sizing:border-box}
 html,body{margin:0}
 body{
-  background:var(--paper);color:var(--ink);font-family:var(--sans);
-  font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;
-  padding:env(safe-area-inset-top,0) 0 env(safe-area-inset-bottom,0);
+  background:var(--cover);color:var(--page);font-family:var(--sans);font-size:16px;line-height:1.6;
+  -webkit-font-smoothing:antialiased;padding:env(safe-area-inset-top,0) 0 env(safe-area-inset-bottom,0);
 }
-button,textarea{font:inherit;color:inherit}
+button,textarea{font:inherit}
 :focus-visible{outline:3px solid var(--focus);outline-offset:2px}
-.wrap{max-width:720px;margin:0 auto;padding:28px 18px 64px}
+.wrap{max-width:680px;margin:0 auto;padding:32px 20px 64px}
+.demo{background:#3A4A6E;color:var(--page);font-size:14px;padding:8px 12px;border-radius:4px;margin:0 0 20px}
 
-/* 원고지 제목 */
-.manuscript{--c:min(calc((100vw - 52px) / 11),50px);display:flex;flex-wrap:nowrap;margin:0 0 4px;padding:0;list-style:none}
-.manuscript li{
-  width:var(--c);height:var(--c);display:grid;place-items:center;
-  background:var(--sheet);border:1px solid var(--grid);margin:0 -1px -1px 0;
-  font-family:var(--serif);font-weight:700;font-size:calc(var(--c)*.6);line-height:1;
-}
-.manuscript li.blank{background:var(--sheet)}
-.masthead p{margin:14px 0 0;color:var(--muted);max-width:34em}
-.masthead p strong{color:var(--ink);font-weight:400}
-.masthead p + p{margin-top:6px}
-.masthead p.gift{margin-top:16px;display:inline-block;color:var(--seal);border:1.5px solid var(--seal);border-radius:4px;padding:6px 12px;font-size:15px}
-.masthead p.gift .gift-how{display:block;margin-top:2px;font-size:13px;color:var(--ink);opacity:.75}
-.booktitle{font-family:var(--serif);font-weight:700;color:var(--ink);white-space:nowrap}
-.screen-note{margin:12px 0 0;color:var(--muted);font-size:clamp(15px,1.25vw,20px)}
+.book{font-family:var(--serif);font-size:15px;color:var(--foil);margin:0 0 18px;padding-bottom:10px;border-bottom:1px solid var(--rule)}
+h1{font-family:var(--serif);font-weight:700;font-size:clamp(30px,8vw,44px);line-height:1.3;margin:0;word-break:keep-all}
+.lede{color:var(--soft);margin:14px 0 0;max-width:30em}
 
-.demo{background:#FFF5D6;border:1px solid #E9D18A;color:#5B4A12;font-size:14px;padding:8px 12px;border-radius:4px;margin:0 0 20px}
+.compose{margin:32px 0 44px;background:var(--page);color:var(--ink);border-radius:4px;padding:18px 18px 16px}
+.compose label{display:block;font-family:var(--serif);font-weight:700;font-size:18px;margin-bottom:8px}
+textarea{
+  width:100%;min-height:6.5em;resize:vertical;border:0;background:transparent;color:var(--ink);
+  font-family:var(--serif);font-size:17px;line-height:1.8;padding:0;outline-offset:6px;
+}
+textarea::placeholder{color:#8C93A0}
+.row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:12px}
+.counter{font-size:14px;color:#6A7282}
+.counter.over{color:#C0392B}
+.btn{border:0;background:var(--foil);color:var(--cover-deep);border-radius:4px;padding:11px 18px;font-size:16px;cursor:pointer}
+.btn.dark{background:var(--ink);color:var(--page)}
+.btn:disabled{opacity:.5;cursor:default}
+.linkbtn{border:0;background:none;padding:4px 2px;color:var(--soft);font-size:14px;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.linkbtn:hover{color:var(--page)}
+.compose .linkbtn{color:#6A7282}
 
-/* 쓰기 */
-.compose{margin:32px 0 40px;background:var(--sheet);border:1px solid var(--line);border-radius:4px;padding:18px 18px 16px}
-.compose label{display:block;font-family:var(--serif);font-weight:700;font-size:19px;margin-bottom:10px}
-.lined{
-  width:100%;min-height:8em;resize:vertical;border:0;outline-offset:6px;background-color:transparent;
-  font-family:var(--serif);font-size:17px;line-height:2em;padding:0 2px;
-  background-image:linear-gradient(transparent calc(2em - 1px),var(--grid) 0);
-  background-size:100% 2em;background-attachment:local;
-}
-.lined::placeholder{color:#9AA2AE}
-.hints{margin:10px 0 0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:6px}
-.hints button{border:1px dashed var(--grid-strong);background:transparent;border-radius:999px;padding:3px 11px;font-size:14px;color:var(--muted);cursor:pointer}
-.hints button:hover{color:var(--ink);border-style:solid}
-.row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:14px}
-.counter{font-size:14px;color:var(--muted)}
-.counter.over{color:var(--seal)}
-.btn{border:0;background:var(--ink);color:#fff;border-radius:4px;padding:11px 18px;font-size:16px;cursor:pointer}
-.btn:disabled{opacity:.45;cursor:default}
-.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
-.linkbtn{border:0;background:none;padding:4px 2px;color:var(--muted);font-size:14px;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
-.linkbtn:hover{color:var(--ink)}
-.linkbtn.danger:hover{color:var(--seal)}
-
-/* 목록 */
-.collection h2{font-family:var(--serif);font-size:22px;margin:0 0 16px;font-weight:700}
-.list{display:grid;gap:14px}
-.card{
-  position:relative;background:var(--sheet);border:1px solid var(--line);border-radius:3px;
-  padding:16px 18px 14px;
-}
-.card .no{font-size:13px;color:var(--grid-strong);letter-spacing:.02em;margin-bottom:6px}
-.card .text{font-family:var(--serif);font-size:17px;line-height:1.85;white-space:pre-wrap;word-break:keep-all;overflow-wrap:anywhere;margin:0;padding-right:8px}
-.card .foot{display:flex;flex-wrap:wrap;align-items:center;gap:4px 12px;margin-top:10px;padding-right:62px;font-size:13px;color:var(--muted)}
-.card .mine{color:var(--ink);background:#E3ECE5;border-radius:3px;padding:0 6px}
-.card textarea{margin-top:2px}
-.seal{
-  position:absolute;right:14px;bottom:10px;width:50px;height:50px;border:2.5px solid var(--seal);border-radius:50%;
-  display:grid;place-items:center;text-align:center;color:var(--seal);font-family:var(--serif);font-weight:700;
-  font-size:12px;line-height:1.1;transform:rotate(-14deg);opacity:.82;mix-blend-mode:multiply;pointer-events:none;
-}
-@keyframes stamp{
-  0%{transform:rotate(-14deg) scale(2.3);opacity:0}
-  65%{transform:rotate(-14deg) scale(.92);opacity:.95}
-  100%{transform:rotate(-14deg) scale(1);opacity:.82}
-}
-.fresh .seal{animation:stamp .55s cubic-bezier(.2,.7,.3,1.15) .15s both}
-.empty{color:var(--muted);border:1px dashed var(--grid);border-radius:4px;padding:28px;text-align:center}
-.status{color:var(--seal);font-size:14px;min-height:1em;margin:0 0 8px}
-footer.host{margin-top:48px;font-size:14px;color:var(--muted)}
-footer.host a{color:var(--muted)}
+h2{font-family:var(--serif);font-size:20px;font-weight:700;margin:0 0 6px}
+.status{color:#F2A3A3;font-size:14px;min-height:1em;margin:0 0 6px}
+.blurb{position:relative;padding:22px 0 20px 34px;border-top:1px solid var(--rule)}
+.blurb::before{content:'\201C';position:absolute;left:0;top:10px;font-family:var(--serif);font-size:54px;line-height:1;color:var(--foil)}
+.blurb .text{font-family:var(--serif);font-size:18px;line-height:1.8;margin:0;white-space:pre-wrap;word-break:keep-all;overflow-wrap:anywhere}
+.blurb .sig{margin-top:8px;font-size:14px;color:var(--soft);display:flex;flex-wrap:wrap;gap:4px 12px;align-items:center}
+.blurb .mine{color:var(--cover-deep);background:var(--foil);border-radius:3px;padding:0 6px}
+.blurb.editing{background:var(--page);color:var(--ink);border-radius:4px;padding:16px 16px 14px 16px;border-top:0;margin:8px 0}
+.blurb.editing::before{display:none}
+@keyframes arrive{from{background:rgba(226,179,74,.18)}to{background:transparent}}
+.blurb.fresh{animation:arrive 2.4s ease-out both}
+.empty{color:var(--soft);border:1px dashed var(--rule);border-radius:4px;padding:28px;text-align:center}
+footer.host{margin-top:48px;font-size:14px;color:var(--soft)}
+footer.host a{color:var(--soft)}
 
 .toast{
   position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);
-  background:var(--ink);color:#fff;padding:10px 16px;border-radius:4px;font-size:15px;opacity:0;pointer-events:none;
+  background:var(--page);color:var(--ink);padding:10px 16px;border-radius:4px;font-size:15px;opacity:0;pointer-events:none;
   transition:opacity .2s,transform .2s;max-width:calc(100% - 32px);text-align:center;z-index:50;
 }
 .toast.show{opacity:1;transform:translate(-50%,0)}
@@ -113,125 +79,84 @@ footer.host a{color:var(--muted)}
 /* ===== 발표 화면 ===== */
 .screen{display:none}
 body.is-screen .wrap{display:none}
-body.is-screen .screen{display:grid;grid-template-rows:auto 1fr;height:100vh;height:100dvh}
-.screen-top{
-  display:grid;grid-template-columns:1fr auto auto;gap:28px;align-items:center;
-  padding:24px 32px 20px;border-bottom:2px solid var(--grid-strong);
-}
-.screen-top .manuscript{--c:min(4.2vw,64px)}
-.tally{font-family:var(--serif);font-size:clamp(18px,1.8vw,28px);white-space:nowrap}
-.tally b{font-size:1.6em;font-weight:700}
-.screen-actions{display:flex;flex-direction:column;gap:8px}
-.screen-actions .btn{font-size:17px;padding:12px 20px}
-.join{display:flex;align-items:center;gap:12px;font-size:15px;color:var(--muted);line-height:1.4}
-.join #qr{background:var(--sheet);padding:6px;border:1px solid var(--line);border-radius:3px;line-height:0}
-.join #qr img,.join #qr canvas{width:112px;height:112px}
-.wall{overflow-y:auto;padding:24px 32px 40px;columns:330px;column-gap:18px}
-.wall .card{break-inside:avoid;margin-bottom:18px;cursor:pointer}
-.wall .card .text{font-size:clamp(18px,1.35vw,24px)}
-.wall .card:hover{border-color:var(--grid-strong)}
-.wall .card.done{opacity:.45}
-.wall .card.done::after{content:'나눔 완료';position:absolute;left:18px;bottom:12px;font-size:13px;color:var(--grid-strong)}
-.wall .empty{column-span:all;font-size:20px;padding:60px}
-
-.focus{position:fixed;inset:0;background:rgba(238,240,233,.97);display:grid;grid-template-rows:1fr auto;z-index:20;padding:40px 32px 24px}
-.focus[hidden]{display:none}
-.focus-card{
-  align-self:center;justify-self:center;width:min(1000px,100%);max-height:100%;overflow:auto;position:relative;
-  background:var(--sheet);border:1px solid var(--line);border-radius:4px;padding:48px 60px 70px;
-}
-.focus-card .no{font-size:20px;color:var(--grid-strong);margin-bottom:18px}
-.focus-card .text{font-family:var(--serif);font-size:clamp(26px,3.1vw,48px);line-height:1.7;white-space:pre-wrap;word-break:keep-all;overflow-wrap:anywhere;margin:0}
-.focus-card.long .text{font-size:clamp(22px,2.3vw,36px)}
-.focus-card.longer .text{font-size:clamp(18px,1.7vw,28px)}
-.focus-card .seal{width:110px;height:110px;font-size:25px;border-width:4px;right:36px;bottom:26px}
-.focus-card.fresh .seal{animation:stamp .55s cubic-bezier(.2,.7,.3,1.15) .1s both}
-.focus-bar{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:10px;margin-top:18px}
-.focus-bar .btn{font-size:17px}
-.focus-bar .pos{color:var(--muted);min-width:5em;text-align:center}
-.keys{color:var(--muted);font-size:13px;text-align:center;margin-top:8px}
-
-@media (max-width:900px){
-  .screen-top{grid-template-columns:1fr;gap:14px}
-  .join{display:none}
-}
-@media (prefers-reduced-motion:reduce){
-  .fresh .seal,.focus-card.fresh .seal{animation:none}
-  .toast{transition:none}
-}
+body.is-screen .screen{display:grid;grid-template-rows:auto 1fr auto;height:100vh;height:100dvh;padding:28px 44px 24px}
+.screen-top{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;border-bottom:1px solid var(--rule);padding-bottom:14px}
+.screen-top .book{border:0;margin:0;padding:0;font-size:clamp(16px,1.4vw,22px)}
+.screen-top h1{font-size:clamp(28px,2.6vw,44px)}
+.tally{font-family:var(--serif);font-size:clamp(18px,1.6vw,26px);color:var(--soft);white-space:nowrap}
+.tally b{color:var(--foil);font-size:1.5em}
+.stage{display:grid;place-items:center;padding:20px 0}
+.spot{max-width:1100px;width:100%;position:relative;padding-left:clamp(50px,6vw,100px);transition:opacity .45s}
+.spot.out{opacity:0}
+.spot::before{content:'\201C';position:absolute;left:0;top:-.15em;font-family:var(--serif);font-size:clamp(90px,10vw,180px);line-height:1;color:var(--foil)}
+.spot .text{font-family:var(--serif);font-size:clamp(30px,3.6vw,60px);line-height:1.6;margin:0;white-space:pre-wrap;word-break:keep-all;overflow-wrap:anywhere}
+.spot.long .text{font-size:clamp(24px,2.5vw,40px)}
+.spot.longer .text{font-size:clamp(19px,1.8vw,30px)}
+.stage{overflow:auto}
+.spot .sig{margin-top:20px;font-size:clamp(16px,1.4vw,22px);color:var(--soft)}
+.screen-bottom{display:flex;justify-content:space-between;align-items:center;gap:20px}
+.controls{display:flex;gap:10px;flex-wrap:wrap}
+.controls .btn{font-size:16px;padding:10px 16px}
+.controls .ghost{background:transparent;color:var(--page);border:1px solid var(--rule)}
+.join{display:flex;align-items:center;gap:12px;font-size:15px;color:var(--soft);line-height:1.4}
+.join #qr{background:var(--page);padding:6px;border-radius:3px;line-height:0}
+.join #qr img,.join #qr canvas{width:104px;height:104px}
+@media (max-width:900px){ .join{display:none} body.is-screen .screen{padding:20px} }
+@media (prefers-reduced-motion:reduce){ .spot,.toast{transition:none} .blurb.fresh{animation:none} }
 </style>
 </head>
 <body>
 
-<!-- 참여 화면 (휴대폰) -->
 <div class="wrap">
   <div class="demo" id="demo" hidden>미리보기 모드예요. 글이 이 기기에만 저장됩니다. 파일 위쪽 설정에 Supabase 주소와 키를 넣으면 모두에게 공유돼요.</div>
 
-  <header class="masthead">
-    <ol class="manuscript" aria-label="바람직한 실패작 모음집"></ol>
-    <p>오늘 북토크에서 만날 책은 학교 밖 청소년 작가들이 함께 쓴 <span class="booktitle">&lt;바람직한 실패작 모음집&gt;</span>이에요. 책 제목처럼, 여러분의 실패작도 한 편씩 모아 봅니다.</p>
-    <p><strong>이름은 남지 않아요.</strong> 오늘 함께 몇 편을 골라 읽고 이야기 나눌 예정이에요.</p>
-    <p class="gift">실패작을 남겨 주신 분들 중 추첨을 통해 소정의 선물을 드려요.<br><span class="gift-how">당첨은 실패작 번호로 확인해요. 글을 쓴 휴대폰에 '내 글' 표시가 남으니, 그 휴대폰으로 확인해 주세요.</span></p>
+  <header>
+    <p class="book">&lt;바람직한 실패작 모음집&gt; 북토크</p>
+    <h1>작가들에게 건네는 한마디</h1>
+    <p class="lede">오늘 만난 학교 밖 청소년 작가들에게 응원을 남겨 주세요. 이름은 남지 않고, 작가들에게 그대로 전해집니다.</p>
   </header>
 
   <form class="compose" id="compose">
-    <label for="draft">나의 실패작 한 편</label>
-    <textarea id="draft" class="lined" placeholder="예) 친구 생일 서프라이즈를 준비했는데, 날짜를 한 달 착각했어요."></textarea>
-    <ul class="hints" aria-label="무엇을 쓸지 막막하다면">
-      <li><button type="button" data-hint="최근에 계획대로 안 된 일 하나를 떠올려 보세요.">계획대로 안 된 일</button></li>
-      <li><button type="button" data-hint="지금 생각하면 웃음이 나는 실수가 있나요?">지금은 웃긴 실수</button></li>
-      <li><button type="button" data-hint="실패했지만 그 덕분에 남은 것이 있다면요?">실패가 남긴 것</button></li>
-    </ul>
+    <label for="draft">응원 한마디</label>
+    <textarea id="draft" placeholder="예) 실패를 이렇게 솔직하게 쓸 수 있다는 게 멋졌어요. 다음 책도 기다릴게요."></textarea>
     <div class="row">
       <span class="counter" id="counter">0자</span>
-      <button class="btn" id="submit" type="submit">실패작 제출하기</button>
+      <button class="btn dark" id="submit" type="submit">응원 보내기</button>
     </div>
   </form>
 
-  <section class="collection" aria-labelledby="collection-title">
-    <h2 id="collection-title">모인 실패작 <span class="count">0</span>편</h2>
+  <section aria-labelledby="list-title">
+    <h2 id="list-title">도착한 응원 <span class="count">0</span>개</h2>
     <p class="status" id="status" role="status"></p>
-    <div class="list" id="list"></div>
+    <div id="list"></div>
   </section>
 
   <footer class="host">진행자용: <a href="?screen">발표 화면으로 열기</a></footer>
 </div>
 
-<!-- 발표 화면 (?screen) -->
 <div class="screen" id="screen">
   <div class="screen-top">
     <div>
-      <ol class="manuscript" aria-label="바람직한 실패작 모음집"></ol>
-      <p class="screen-note">학교 밖 청소년 작가들이 함께 쓴 책의 제목이에요. 여러분의 실패작도 함께 모아 봅니다.</p>
+      <p class="book">&lt;바람직한 실패작 모음집&gt; 북토크</p>
+      <h1>작가들에게 건네는 한마디</h1>
     </div>
-    <div class="screen-actions">
-      <div class="tally">모인 실패작 <b class="count">0</b>편</div>
-      <button class="btn" id="pick" type="button">한 편 뽑기</button>
-      <button class="btn ghost" id="fullscreen" type="button">전체 화면</button>
-    </div>
-    <div class="join"><div id="qr"></div><span>휴대폰으로<br>실패작 남기기</span></div>
+    <div class="tally">도착한 응원 <b class="count">0</b>개</div>
   </div>
-  <div class="wall" id="wall"></div>
-</div>
-
-<div class="focus" id="focus" hidden role="dialog" aria-modal="true" aria-label="실패작 크게 보기">
-  <article class="focus-card" id="focusCard">
-    <div class="no" id="focusNo"></div>
-    <p class="text" id="focusText"></p>
-    <div class="seal" aria-hidden="true">바람<br>직함</div>
-  </article>
-  <div>
-    <div class="focus-bar">
+  <div class="stage">
+    <figure class="spot" id="spot" aria-live="polite" style="margin:0">
+      <p class="text" id="spotText"></p>
+      <figcaption class="sig" id="spotSig"></figcaption>
+    </figure>
+  </div>
+  <div class="screen-bottom">
+    <div class="controls">
       <button class="btn ghost" id="prev" type="button">이전</button>
-      <span class="pos" id="focusPos"></span>
+      <button class="btn ghost" id="pause" type="button">멈춤</button>
       <button class="btn ghost" id="next" type="button">다음</button>
-      <button class="btn" id="pickAgain" type="button">다른 한 편 뽑기</button>
-      <button class="btn ghost" id="markDone" type="button">나눔 완료</button>
-      <button class="linkbtn" id="hide" type="button">이 화면에서 숨기기</button>
-      <button class="linkbtn danger" id="adminDel" type="button">관리자 삭제</button>
-      <button class="btn ghost" id="close" type="button">닫기</button>
+      <button class="btn ghost" id="fullscreen" type="button">전체 화면</button>
+      <button class="linkbtn" id="adminDel" type="button">관리자 삭제</button>
     </div>
-    <p class="keys">← → 이동, 스페이스 뽑기, D 나눔 완료, Esc 닫기</p>
+    <div class="join"><span>휴대폰으로<br>응원 남기기</span><div id="qr"></div></div>
   </div>
 </div>
 
@@ -243,12 +168,14 @@ const CONFIG = {
   SUPABASE_URL: "https://YOUR-PROJECT.supabase.co",
   SUPABASE_ANON_KEY: "YOUR-ANON-OR-PUBLISHABLE-KEY",
 };
+const ROTATE_SECONDS = 7;   // 발표 화면에서 한 응원을 보여주는 시간
 /* ============================================ */
 
-const BOARD = "failure", MAX = 5000, TITLE = "바람직한 실패작 모음집";
+const BOARD = "cheer", MAX = 5000;
 const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
 const SCREEN = new URLSearchParams(location.search).has("screen");
 const DEMO = !/^https:\/\//.test(CONFIG.SUPABASE_URL) || CONFIG.SUPABASE_URL.includes("YOUR-PROJECT");
+const REDUCED = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 const store = {
   get(k, d){ try{ const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; }catch(e){ return d; } },
@@ -262,7 +189,6 @@ function uuid(){
 }
 const TOKEN = store.get("booktalk.token") || (() => { const t = uuid(); store.set("booktalk.token", t); return t; })();
 
-/* ---- 저장소 ---- */
 async function rest(path, body){
   const headers = { apikey: CONFIG.SUPABASE_ANON_KEY, "Content-Type": "application/json" };
   if (CONFIG.SUPABASE_ANON_KEY.startsWith("eyJ")) headers.Authorization = "Bearer " + CONFIG.SUPABASE_ANON_KEY;
@@ -304,15 +230,10 @@ const demoApi = {
 };
 const api = DEMO ? demoApi : remoteApi;
 
-/* ---- 상태 ---- */
-const state = { posts: [], seen: new Set(), loaded: false, editing: null, focusId: null };
+const state = { posts: [], seen: new Set(), loaded: false, editing: null, sig: "" };
 const mine = new Set(store.get("booktalk.mine", []));
-const done = new Set(store.get("booktalk.done." + BOARD, []));
-const hidden = new Set(store.get("booktalk.hidden." + BOARD, []));
 const saveMine = () => store.set("booktalk.mine", [...mine]);
 
-/* ---- 공통 표시 ---- */
-const pad = n => String(n).padStart(3, "0");
 function ago(iso){
   const s = (Date.now() - new Date(iso).getTime()) / 1000;
   if (s < 60) return "방금";
@@ -327,14 +248,8 @@ function toast(msg){
 }
 function el(tag, cls, text){ const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
 
-$$(".manuscript").forEach(ol => {
-  [...TITLE].forEach(ch => { const li = el("li", ch === " " ? "blank" : "", ch === " " ? "" : ch); li.setAttribute("aria-hidden", "true"); ol.appendChild(li); });
-});
 if (DEMO) $("#demo").hidden = false;
 if (SCREEN) document.body.classList.add("is-screen");
-
-/* ---- 목록 ---- */
-const visible = () => state.posts.filter(p => !(SCREEN && hidden.has(p.id)));
 
 async function refresh(){
   if (state.editing) return;
@@ -343,40 +258,36 @@ async function refresh(){
     $("#status").textContent = "";
     const sig = JSON.stringify(posts.map(p => [p.id, p.content, p.updated_at]));
     if (state.loaded && sig === state.sig) return;
+    const fresh = state.loaded ? posts.filter(p => !state.seen.has(p.id)) : [];
     state.sig = sig; state.posts = posts;
-    render();
+    if (SCREEN) onScreenUpdate(fresh); else render();
+    posts.forEach(p => state.seen.add(p.id));
+    state.loaded = true;
   }catch(e){
     $("#status").textContent = "목록을 불러오지 못했어요. 인터넷 연결을 확인해 주세요.";
   }
 }
 
+/* ---- 참여 화면 ---- */
 function render(){
-  const posts = visible();
-  $$(".count").forEach(c => c.textContent = posts.length);
-  const box = SCREEN ? $("#wall") : $("#list");
-  if (!posts.length){
-    box.replaceChildren(el("div", "empty", SCREEN ? "아직 도착한 실패작이 없어요. QR 코드로 첫 번째 실패작을 남겨 주세요." : "아직 아무도 쓰지 않았어요. 첫 번째 실패작을 남겨 주세요."));
-  } else {
-    box.replaceChildren(...posts.map(card));
-  }
-  posts.forEach(p => state.seen.add(p.id));
-  state.loaded = true;
-  if (state.focusId) renderFocus(false);
+  $$(".count").forEach(c => c.textContent = state.posts.length);
+  const box = $("#list");
+  if (!state.posts.length){ box.replaceChildren(el("div", "empty", "아직 도착한 응원이 없어요. 첫 번째 한마디를 남겨 주세요.")); return; }
+  box.replaceChildren(...state.posts.map(blurb));
 }
-
-function card(p){
+function blurb(p){
   const fresh = state.loaded && !state.seen.has(p.id);
-  const a = el("article", "card" + (fresh ? " fresh" : "") + (SCREEN && done.has(p.id) ? " done" : ""));
+  const a = el("article", "blurb" + (fresh ? " fresh" : ""));
   a.dataset.id = p.id;
-  a.appendChild(el("div", "no", "실패작 No. " + pad(p.no)));
 
   if (state.editing === p.id){
-    const ta = el("textarea", "lined"); ta.value = p.content; ta.setAttribute("aria-label", "실패작 수정");
+    a.classList.add("editing");
+    const ta = el("textarea"); ta.value = p.content; ta.setAttribute("aria-label", "응원 수정");
     const cnt = el("span", "counter");
     const upd = () => { cnt.textContent = ta.value.trim().length + "자"; cnt.classList.toggle("over", ta.value.trim().length > MAX); };
     ta.addEventListener("input", upd); upd();
-    const save = el("button", "btn", "수정 저장"); save.type = "button";
-    const cancel = el("button", "linkbtn", "취소"); cancel.type = "button";
+    const save = el("button", "btn dark", "수정 저장"); save.type = "button";
+    const cancel = el("button", "linkbtn", "취소"); cancel.type = "button"; cancel.style.color = "#6A7282";
     save.onclick = async () => {
       const v = ta.value.trim();
       if (!v) return toast("내용을 입력해 주세요");
@@ -386,41 +297,32 @@ function card(p){
       catch(e){ toast(e.message); save.disabled = false; }
     };
     cancel.onclick = () => { state.editing = null; render(); };
-    const row = el("div", "row"); row.append(cnt, el("span"));
-    row.lastChild.append(cancel, document.createTextNode(" "), save);
+    const right = el("span"); right.append(cancel, document.createTextNode(" "), save);
+    const row = el("div", "row"); row.append(cnt, right);
     a.append(ta, row);
     setTimeout(() => ta.focus(), 0);
     return a;
   }
 
   a.appendChild(el("p", "text", p.content));
-  const foot = el("div", "foot");
-  foot.appendChild(el("span", "", ago(p.created_at) + (p.updated_at ? ", 수정됨" : "")));
-  if (!SCREEN && mine.has(p.id)){
-    foot.appendChild(el("span", "mine", "내 글"));
+  const sig = el("div", "sig");
+  sig.appendChild(el("span", "", "익명의 독자, " + ago(p.created_at) + (p.updated_at ? " (수정됨)" : "")));
+  if (mine.has(p.id)){
+    sig.appendChild(el("span", "mine", "내 글"));
     const e = el("button", "linkbtn", "수정"); e.type = "button";
-    const d = el("button", "linkbtn danger", "삭제"); d.type = "button";
+    const d = el("button", "linkbtn", "삭제"); d.type = "button";
     e.onclick = () => { state.editing = p.id; render(); };
     d.onclick = async () => {
-      if (!confirm("이 실패작을 삭제할까요? 되돌릴 수 없어요.")) return;
+      if (!confirm("이 응원을 삭제할까요? 되돌릴 수 없어요.")) return;
       try{ await api.remove(p.id); mine.delete(p.id); saveMine(); toast("삭제했어요"); await refresh(); }
       catch(err){ toast(err.message); }
     };
-    foot.append(e, d);
+    sig.append(e, d);
   }
-  a.appendChild(foot);
-  const seal = el("div", "seal"); seal.innerHTML = "바람<br>직함"; seal.setAttribute("aria-hidden", "true");
-  a.appendChild(seal);
-
-  if (SCREEN){
-    a.tabIndex = 0; a.setAttribute("role", "button"); a.setAttribute("aria-label", "실패작 No. " + pad(p.no) + " 크게 보기");
-    a.onclick = () => openFocus(p.id);
-    a.onkeydown = ev => { if (ev.key === "Enter") openFocus(p.id); };
-  }
+  a.appendChild(sig);
   return a;
 }
 
-/* ---- 쓰기 ---- */
 const draft = $("#draft");
 function updateCounter(){
   const n = draft.value.trim().length;
@@ -428,8 +330,6 @@ function updateCounter(){
   $("#counter").classList.toggle("over", n > MAX);
 }
 draft.addEventListener("input", updateCounter);
-$$(".hints button").forEach(b => b.onclick = () => { draft.placeholder = b.dataset.hint; draft.focus(); });
-
 $("#compose").addEventListener("submit", async ev => {
   ev.preventDefault();
   const text = draft.value.trim();
@@ -440,91 +340,76 @@ $("#compose").addEventListener("submit", async ev => {
     const r = await api.create(BOARD, text);
     mine.add(r.id); saveMine();
     draft.value = ""; updateCounter();
-    toast("실패작 No. " + pad(r.no) + "로 수록했어요");
+    toast("응원을 보냈어요");
     await refresh();
-    const node = document.querySelector('[data-id="' + r.id + '"]');
-    if (node) node.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "center" });
-  }catch(e){ toast(e.message || "제출하지 못했어요. 다시 시도해 주세요."); }
+  }catch(e){ toast(e.message || "보내지 못했어요. 다시 시도해 주세요."); }
   finally{ btn.disabled = false; }
 });
 
-/* ---- 발표 화면 ---- */
-function openFocus(id){
-  state.focusId = id; $("#focus").hidden = false; renderFocus(true); $("#close").focus();
+/* ---- 발표 화면: 한 문장씩 크게 ---- */
+const spot = { id: null, queue: [], paused: false, timer: null };
+function onScreenUpdate(fresh){
+  $$(".count").forEach(c => c.textContent = state.posts.length);
+  fresh.slice().reverse().forEach(p => spot.queue.push(p.id));   // 새로 온 응원은 먼저 보여주기
+  const current = state.posts.find(p => p.id === spot.id);
+  if (!current) { spot.id = null; advance(1); }
+  else showSpot(current, false);
 }
-function closeFocus(){
-  const id = state.focusId; state.focusId = null; $("#focus").hidden = true;
-  const n = id && document.querySelector('[data-id="' + id + '"]'); if (n) n.focus();
+function showSpot(p, animate){
+  const box = $("#spot");
+  const fill = () => {
+    if (!p) { $("#spotText").textContent = "첫 번째 응원을 기다리고 있어요"; $("#spotSig").textContent = "QR 코드로 들어와 한마디를 남겨 주세요"; return; }
+    $("#spotText").textContent = p.content;
+    box.classList.toggle("long", p.content.length > 90);
+    box.classList.toggle("longer", p.content.length > 250);
+    $("#spotSig").textContent = "익명의 독자";
+  };
+  if (!animate || REDUCED) { fill(); return; }
+  box.classList.add("out");
+  setTimeout(() => { fill(); box.classList.remove("out"); }, 450);
 }
-function renderFocus(animate){
-  const posts = visible(), i = posts.findIndex(p => p.id === state.focusId);
-  if (i < 0) { closeFocus(); return; }
-  const p = posts[i];
-  $("#focusNo").textContent = "실패작 No. " + pad(p.no);
-  $("#focusText").textContent = p.content;
-  $("#focusCard").classList.toggle("long", p.content.length > 180);
-  $("#focusCard").classList.toggle("longer", p.content.length > 450);
-  $("#focusPos").textContent = (i+1) + " / " + posts.length;
-  $("#markDone").textContent = done.has(p.id) ? "나눔 완료 취소" : "나눔 완료";
-  const c = $("#focusCard");
-  if (animate){ c.classList.remove("fresh"); void c.offsetWidth; c.classList.add("fresh"); }
+function advance(d){
+  const posts = state.posts;
+  if (!posts.length) { spot.id = null; showSpot(null, false); return; }
+  let next = null;
+  while (d > 0 && spot.queue.length && !next) next = posts.find(p => p.id === spot.queue.shift()) || null;
+  if (!next){
+    const i = posts.findIndex(p => p.id === spot.id);
+    next = posts[(i + d + posts.length) % posts.length];
+    if (i < 0) next = posts[0];
+  }
+  spot.id = next.id; showSpot(next, true);
 }
-function step(d){
-  const posts = visible(); if (!posts.length) return;
-  const i = posts.findIndex(p => p.id === state.focusId);
-  state.focusId = posts[(i + d + posts.length) % posts.length].id; renderFocus(true);
+function restartTimer(){
+  clearInterval(spot.timer);
+  if (!spot.paused) spot.timer = setInterval(() => advance(1), ROTATE_SECONDS * 1000);
 }
-function pick(){
-  const posts = visible(); if (!posts.length) { toast("아직 뽑을 실패작이 없어요"); return; }
-  let pool = posts.filter(p => !done.has(p.id) && p.id !== state.focusId);
-  if (!pool.length) pool = posts.filter(p => p.id !== state.focusId);
-  if (!pool.length) pool = posts;
-  const p = pool[Math.floor(Math.random() * pool.length)];
-  if ($("#focus").hidden) openFocus(p.id); else { state.focusId = p.id; renderFocus(true); }
-}
-function toggleDone(){
-  if (!state.focusId) return;
-  done.has(state.focusId) ? done.delete(state.focusId) : done.add(state.focusId);
-  store.set("booktalk.done." + BOARD, [...done]); render();
-}
-$("#pick").onclick = pick;
-$("#pickAgain").onclick = pick;
-$("#prev").onclick = () => step(-1);
-$("#next").onclick = () => step(1);
-$("#close").onclick = closeFocus;
-$("#markDone").onclick = toggleDone;
-$("#hide").onclick = () => {
-  const id = state.focusId; if (!id) return;
-  step(1); hidden.add(id); store.set("booktalk.hidden." + BOARD, [...hidden]);
-  if (state.focusId === id) state.focusId = null;
-  render(); if (!state.focusId) closeFocus(); toast("이 화면에서 숨겼어요");
-};
-$("#adminDel").onclick = async () => {
-  const id = state.focusId; if (!id) return;
-  let code = sessionStorage.getItem("booktalk.admin");
-  if (!code) { code = prompt("관리자 코드를 입력하세요"); if (!code) return; }
-  if (!confirm("이 글을 모든 화면에서 삭제할까요?")) return;
-  try{
-    await api.adminRemove(id, code); sessionStorage.setItem("booktalk.admin", code);
-    step(1); if (state.focusId === id) closeFocus(); toast("삭제했어요"); await refresh();
-  }catch(e){ sessionStorage.removeItem("booktalk.admin"); toast(e.message); }
-};
-$("#fullscreen").onclick = () => {
-  if (document.fullscreenElement) document.exitFullscreen();
-  else if (document.documentElement.requestFullscreen) document.documentElement.requestFullscreen();
-};
-document.addEventListener("keydown", ev => {
-  if (!SCREEN || ev.target.matches("textarea,input")) return;
-  const open = !$("#focus").hidden;
-  if (ev.key === " " ) { ev.preventDefault(); pick(); }
-  else if (open && ev.key === "ArrowRight") step(1);
-  else if (open && ev.key === "ArrowLeft") step(-1);
-  else if (open && (ev.key === "d" || ev.key === "D")) toggleDone();
-  else if (open && ev.key === "Escape") closeFocus();
-});
-
-if (SCREEN && window.QRCode){
-  new QRCode($("#qr"), { text: location.origin + location.pathname, width: 224, height: 224, colorDark: "#1F2A44", colorLight: "#FBFCF7" });
+if (SCREEN){
+  $("#next").onclick = () => { advance(1); restartTimer(); };
+  $("#prev").onclick = () => { advance(-1); restartTimer(); };
+  $("#pause").onclick = () => { spot.paused = !spot.paused; $("#pause").textContent = spot.paused ? "재생" : "멈춤"; restartTimer(); };
+  $("#fullscreen").onclick = () => {
+    if (document.fullscreenElement) document.exitFullscreen();
+    else if (document.documentElement.requestFullscreen) document.documentElement.requestFullscreen();
+  };
+  $("#adminDel").onclick = async () => {
+    const id = spot.id; if (!id) return;
+    let code = sessionStorage.getItem("booktalk.admin");
+    if (!code) { code = prompt("관리자 코드를 입력하세요"); if (!code) return; }
+    if (!confirm("지금 보이는 응원을 모든 화면에서 삭제할까요?")) return;
+    try{ await api.adminRemove(id, code); sessionStorage.setItem("booktalk.admin", code); toast("삭제했어요"); await refresh(); }
+    catch(e){ sessionStorage.removeItem("booktalk.admin"); toast(e.message); }
+  };
+  document.addEventListener("keydown", ev => {
+    if (ev.key === "ArrowRight") $("#next").click();
+    else if (ev.key === "ArrowLeft") $("#prev").click();
+    else if (ev.key === " ") { ev.preventDefault(); $("#pause").click(); }
+  });
+  if (window.QRCode){
+    new QRCode($("#qr"), { text: location.origin + location.pathname, width: 208, height: 208, colorDark: "#18233B", colorLight: "#F3F1E8" });
+  }
+  showSpot(null, false);
+  restartTimer();
 }
 
 refresh();
