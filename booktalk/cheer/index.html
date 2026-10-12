@@ -76,6 +76,18 @@ footer.host a{color:var(--soft)}
 }
 .toast.show{opacity:1;transform:translate(-50%,0)}
 
+/* ===== 발표 화면 잠금 ===== */
+.gate{display:none}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+body.locked .wrap,body.locked .screen{display:none !important}
+body.locked .gate{display:grid;place-items:center;min-height:100vh;min-height:100dvh;padding:24px}
+.gate-box{width:min(360px,100%);background:var(--page);color:var(--ink);border-radius:4px;padding:26px 24px 18px}
+.gate-box h2{font-family:var(--serif);font-size:22px;margin:0 0 4px}
+.gate-box p{margin:0 0 16px;color:#5E6878}
+.gate-box input{width:100%;font:inherit;font-size:17px;padding:10px 12px;border:1px solid #D3D6DD;border-radius:4px;background:#fff;color:var(--ink);margin-bottom:12px}
+.gate-box .btn{width:100%}
+.gate-box .gate-msg{min-height:1.4em;margin:12px 0 0;font-size:14px}
+
 /* ===== 발표 화면 ===== */
 .screen{display:none}
 body.is-screen .wrap{display:none}
@@ -130,8 +142,6 @@ body.is-screen .screen{display:grid;grid-template-rows:auto 1fr auto;height:100v
     <p class="status" id="status" role="status"></p>
     <div id="list"></div>
   </section>
-
-  <footer class="host">진행자용: <a href="?screen">발표 화면으로 열기</a></footer>
 </div>
 
 <div class="screen" id="screen">
@@ -158,6 +168,17 @@ body.is-screen .screen{display:grid;grid-template-rows:auto 1fr auto;height:100v
     </div>
     <div class="join"><span>휴대폰으로<br>응원 남기기</span><div id="qr"></div></div>
   </div>
+</div>
+
+<div class="gate" id="gate">
+  <form class="gate-box" id="gateForm">
+    <h2>발표 화면</h2>
+    <p>진행자용 화면이에요. 관리자 코드를 입력해 주세요.</p>
+    <label for="gateCode" class="sr">관리자 코드</label>
+    <input type="password" id="gateCode" autocomplete="current-password" placeholder="관리자 코드">
+    <button class="btn dark" type="submit">열기</button>
+    <p class="gate-msg" id="gateMsg" role="status"></p>
+  </form>
 </div>
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
@@ -346,6 +367,38 @@ $("#compose").addEventListener("submit", async ev => {
   finally{ btn.disabled = false; }
 });
 
+/* ---- 발표 화면 잠금 ---- */
+const ADMIN_KEY = "booktalk.admin";
+const ss = {
+  get(k){ try{ return sessionStorage.getItem(k); }catch(e){ return null; } },
+  set(k, v){ try{ sessionStorage.setItem(k, v); }catch(e){} },
+  del(k){ try{ sessionStorage.removeItem(k); }catch(e){} },
+};
+async function checkAdmin(code){
+  if (DEMO) return !!code;
+  return (await rest("rpc/booktalk_admin_check", { p_code: code })) === true;
+}
+function gate(onOpen){
+  document.body.classList.add("locked");
+  const form = $("#gateForm"), input = $("#gateCode"), msg = $("#gateMsg");
+  const unlock = () => { document.body.classList.remove("locked"); onOpen(); };
+  if (DEMO) msg.textContent = "미리보기에서는 아무 코드나 입력하면 열려요.";
+  form.addEventListener("submit", async ev => {
+    ev.preventDefault();
+    const code = input.value.trim();
+    if (!code) { input.focus(); return; }
+    const btn = form.querySelector("button"); btn.disabled = true; msg.textContent = "확인하는 중이에요";
+    try{
+      if (await checkAdmin(code)) { ss.set(ADMIN_KEY, code); unlock(); }
+      else { msg.textContent = "관리자 코드가 맞지 않아요."; input.select(); }
+    }catch(e){ msg.textContent = e.message; }
+    finally{ btn.disabled = false; }
+  });
+  const saved = ss.get(ADMIN_KEY);
+  if (saved) checkAdmin(saved).then(ok => { if (ok) unlock(); else { ss.del(ADMIN_KEY); input.focus(); } }).catch(() => input.focus());
+  else input.focus();
+}
+
 /* ---- 발표 화면: 한 문장씩 크게 ---- */
 const spot = { id: null, queue: [], paused: false, timer: null };
 function onScreenUpdate(fresh){
@@ -394,27 +447,33 @@ if (SCREEN){
   };
   $("#adminDel").onclick = async () => {
     const id = spot.id; if (!id) return;
-    let code = sessionStorage.getItem("booktalk.admin");
+    let code = ss.get(ADMIN_KEY);
     if (!code) { code = prompt("관리자 코드를 입력하세요"); if (!code) return; }
     if (!confirm("지금 보이는 응원을 모든 화면에서 삭제할까요?")) return;
-    try{ await api.adminRemove(id, code); sessionStorage.setItem("booktalk.admin", code); toast("삭제했어요"); await refresh(); }
-    catch(e){ sessionStorage.removeItem("booktalk.admin"); toast(e.message); }
+    try{ await api.adminRemove(id, code); ss.set(ADMIN_KEY, code); toast("삭제했어요"); await refresh(); }
+    catch(e){ ss.del(ADMIN_KEY); toast(e.message); }
   };
   document.addEventListener("keydown", ev => {
+    if (document.body.classList.contains("locked") || ev.target.matches("textarea,input")) return;
     if (ev.key === "ArrowRight") $("#next").click();
     else if (ev.key === "ArrowLeft") $("#prev").click();
     else if (ev.key === " ") { ev.preventDefault(); $("#pause").click(); }
   });
-  if (window.QRCode){
-    new QRCode($("#qr"), { text: location.origin + location.pathname, width: 208, height: 208, colorDark: "#18233B", colorLight: "#F3F1E8" });
-  }
-  showSpot(null, false);
-  restartTimer();
 }
 
-refresh();
-setInterval(refresh, SCREEN ? 4000 : 10000);
-document.addEventListener("visibilitychange", () => { if (!document.hidden) refresh(); });
+function start(){
+  if (SCREEN){
+    if (window.QRCode){
+      new QRCode($("#qr"), { text: location.origin + location.pathname, width: 208, height: 208, colorDark: "#18233B", colorLight: "#F3F1E8" });
+    }
+    showSpot(null, false);
+    restartTimer();
+  }
+  refresh();
+  setInterval(refresh, SCREEN ? 4000 : 10000);
+  document.addEventListener("visibilitychange", () => { if (!document.hidden) refresh(); });
+}
+if (SCREEN) gate(start); else start();
 </script>
 </body>
 </html>
