@@ -177,8 +177,6 @@ body.is-screen .screen{display:grid;grid-template-rows:auto 1fr;height:100vh;hei
 
 <!-- 참여 화면 (휴대폰) -->
 <div class="wrap">
-  <div class="demo" id="demo" hidden>미리보기 모드예요. 글이 이 기기에만 저장됩니다. 파일 위쪽 설정에 Supabase 주소와 키를 넣으면 모두에게 공유돼요.</div>
-
   <header class="masthead">
     <ol class="manuscript" aria-label="바람직한 실패작 모음집"></ol>
     <p>오늘 북토크에서 만날 책은 학교 밖 청소년 작가들이 함께 쓴 <span class="booktitle">&lt;바람직한 실패작 모음집&gt;</span>이에요. 책 제목처럼, 여러분의 실패작도 한 편씩 모아 봅니다.</p>
@@ -351,7 +349,6 @@ function el(tag, cls, text){ const e = document.createElement(tag); if (cls) e.c
 $$(".manuscript").forEach(ol => {
   [...TITLE].forEach(ch => { const li = el("li", ch === " " ? "blank" : "", ch === " " ? "" : ch); li.setAttribute("aria-hidden", "true"); ol.appendChild(li); });
 });
-if (DEMO) $("#demo").hidden = false;
 if (SCREEN) document.body.classList.add("is-screen");
 
 /* ---- 목록 ---- */
