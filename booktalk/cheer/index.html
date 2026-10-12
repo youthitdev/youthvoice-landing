@@ -120,8 +120,6 @@ body.is-screen .screen{display:grid;grid-template-rows:auto 1fr auto;height:100v
 <body>
 
 <div class="wrap">
-  <div class="demo" id="demo" hidden>미리보기 모드예요. 글이 이 기기에만 저장됩니다. 파일 위쪽 설정에 Supabase 주소와 키를 넣으면 모두에게 공유돼요.</div>
-
   <header>
     <p class="book">&lt;바람직한 실패작 모음집&gt; 북토크</p>
     <h1>작가들에게 건네는 한마디</h1>
@@ -269,7 +267,6 @@ function toast(msg){
 }
 function el(tag, cls, text){ const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
 
-if (DEMO) $("#demo").hidden = false;
 if (SCREEN) document.body.classList.add("is-screen");
 
 async function refresh(){
