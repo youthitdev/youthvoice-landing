@@ -35,8 +35,9 @@ p{margin:0}
 /* project title + logos */
 .pname{font-size:clamp(54px,12vw,160px);line-height:1.02;letter-spacing:-.02em}
 .logos{display:flex;flex-wrap:wrap;align-items:center;gap:14px 36px;margin-top:clamp(20px,3vw,32px);padding-bottom:clamp(28px,4vw,48px);border-bottom:1px solid var(--line)}
-.lgi{height:clamp(30px,4.4vw,48px);width:auto;background:#fff;padding:10px 18px;border-radius:8px;border:1px solid var(--line);box-sizing:content-box}
-.logos{gap:14px 20px}
+.lgi{height:clamp(30px,4vw,44px);width:auto}
+.logos .lgi:nth-child(2){height:clamp(23px,3.1vw,34px)}
+.logos{gap:16px clamp(28px,4vw,48px)}
 
 /* programs */
 .progs{border-bottom:1px solid var(--line)}
@@ -368,6 +369,19 @@ a.poster{display:block;text-decoration:none}
 .vbtn::before{content:"";width:0;height:0;border-left:11px solid var(--yellow);border-top:7px solid transparent;border-bottom:7px solid transparent}
 .vbtn:hover{background:#000;transform:translateY(-2px);box-shadow:0 10px 22px rgba(27,31,59,.22)}
 .ptag .hl{color:var(--pink);font-weight:800}
+
+/* title letters hop up one by one */
+.pn1 .ch{display:inline-block}
+@keyframes letterPop{0%{opacity:0;transform:translateY(70px) scale(.92)}55%{opacity:1;transform:translateY(-26px) scale(1.03)}78%{transform:translateY(7px)}100%{opacity:1;transform:none}}
+@keyframes dotPop{0%{transform:scale(0)}60%{transform:scale(1.45)}100%{transform:scale(1)}}
+@media (prefers-reduced-motion:no-preference){
+  .pn1{animation:none}
+  .pn1 .ch{animation:letterPop .95s cubic-bezier(.2,.9,.3,1.15) both;animation-delay:var(--ld,0s)}
+  .pn1 i{animation:dotPop .5s cubic-bezier(.3,1.5,.5,1) both;animation-delay:var(--dd,0s)}
+  .pn2{animation-delay:1.35s}
+  .ptag{animation-delay:1.6s}
+  .logos{animation-delay:1.75s}
+}
 </style>
 </head>
 <body id="top">
@@ -376,7 +390,7 @@ a.poster{display:block;text-decoration:none}
   <div class="wrap navin">
     <a class="wm" href="#top">문장력 프로젝트</a>
     <ul>
-      <li><a href="#s-prog">프로그램</a></li>
+      <li><a href="#s-prog">교육 지원</a></li>
       <li><a href="#s-field">현장 기록</a></li>
       <li><a href="#s-orgs">참여기관</a></li>
       <li><a href="#s-impact">임팩트 결과</a></li>
@@ -392,7 +406,7 @@ a.poster{display:block;text-decoration:none}
     <div class="titleblock">
       <span class="deco c1" aria-hidden="true"></span><span class="deco c2" aria-hidden="true"></span><span class="deco c3" aria-hidden="true"></span>
       <p class="kicker">KT&amp;G장학재단 이주배경청소년 교육지원 장학사업</p>
-      <h1 class="pname" id="h-hero" aria-label="문장력 프로젝트"><span class="pn1" aria-hidden="true">문<i></i>장<i></i>력</span><span class="pn2" aria-hidden="true">프로젝트</span></h1>
+      <h1 class="pname" id="h-hero" aria-label="문장력 프로젝트"><span class="pn1" aria-hidden="true"><span class="ch" style="--ld:.1s">문</span><i style="--dd:.55s"></i><span class="ch" style="--ld:.5s">장</span><i style="--dd:.95s"></i><span class="ch" style="--ld:.9s">력</span></span><span class="pn2" aria-hidden="true">프로젝트</span></h1>
       <p class="ptag"><span class="hl">문</span>화와 언어의 <span class="hl">장</span>벽을 뛰어넘는 디지털 문해<span class="hl">력</span></p>
     </div>
     <div class="logos" aria-label="후원과 운영">
@@ -434,7 +448,7 @@ a.poster{display:block;text-decoration:none}
       <div class="stat"><div><span class="num">344</span><span class="u">명</span></div><p class="lab">참여 청소년</p><p class="det">이주배경청소년 누적 참여 인원</p></div>
       <div class="stat"><div><span class="num">7</span><span class="u">곳</span></div><p class="lab">함께한 기관</p><p class="det">복지관, 학교, 청소년센터</p></div>
       <div class="stat"><div><span class="num">11</span><span class="u">개국</span></div><p class="lab">만난 나라</p><p class="det">중국, 몽골, 베트남, 필리핀, 우즈베키스탄 외 6개국</p></div>
-      <div class="stat"><div><span class="num">30</span><span class="u">개</span></div><p class="lab">운영한 프로그램</p><p class="det">미디어·예술교육 20개, 한국어 교육 10개</p></div>
+      <div class="stat"><div><span class="num">30</span><span class="u">개</span></div><p class="lab">운영한 프로그램</p><p class="det">예술 교육 20개, 한국어 교육 10개</p></div>
     </div>
   </div>
 </section>
@@ -442,7 +456,7 @@ a.poster{display:block;text-decoration:none}
 <!-- 01 VALUES -->
 <section class="sec" id="s-values" aria-labelledby="h-values">
   <div class="wrap">
-    <div class="sh"><span class="no">01</span><h2 id="h-values">세 가지 성장 가치</h2></div>
+    <div class="sh"><span class="no">01</span><h2 id="h-values">교육 가치</h2></div>
     <div class="body joined">
       <div><h3><i style="background:var(--yellow)"></i>자기표현</h3><p>자신을 드러낼 기회가 적었던 청소년이 랩, 사진, 그림, 영상, 공예로 자기 이야기를 직접 만듭니다.</p></div>
       <div><h3><i style="background:var(--sky)"></i>비판적 사고</h3><p>창작 과정에서 디지털 정보를 접하고 활용하며, 자신만의 작품을 만들어 봅니다.</p></div>
@@ -454,14 +468,14 @@ a.poster{display:block;text-decoration:none}
 <!-- 03 PROGRAMS -->
 <section class="sec soft" id="s-prog" aria-labelledby="h-prog">
   <div class="wrap">
-    <div class="sh"><span class="no">02</span><h2 id="h-prog">세부 프로그램</h2></div>
+    <div class="sh"><span class="no">02</span><h2 id="h-prog">교육 지원</h2></div>
     <div class="body pcards">
       <article class="pcard m">
         <div class="ico" aria-hidden="true">🎨</div>
-        <span class="cat">미디어·예술교육</span>
+        <span class="cat">예술 교육</span>
         <h3>나를 표현하는 창작 교육</h3>
         <p>랩, 사진, 영상, 그림, 공예를 미디어 전문 교육자와 함께 배우고, 자기 이야기를 작품으로 만듭니다.</p>
-        <div class="st"><div><b>20개</b><span>수업, 2시간씩 8회</span></div><div><b>207명</b><span>참여 청소년</span></div><div><b>7개</b><span>미디어·예술 분야</span></div></div>
+        <div class="st"><div><b>20개</b><span>수업, 2시간씩 8회</span></div><div><b>207명</b><span>참여 청소년</span></div><div><b>7개</b><span>예술 분야</span></div></div>
       </article>
       <article class="pcard k">
         <div class="ico" aria-hidden="true">📖</div>
@@ -479,7 +493,7 @@ a.poster{display:block;text-decoration:none}
       </article>
     </div>
 
-    <h3 class="subh">미디어·예술교육 프로그램 소개</h3>
+    <h3 class="subh">예술 교육 프로그램</h3>
     <p class="lead" style="margin-top:0">랩, 사진, 영상, 그림, 공예 등 다양한 매체로 이주배경청소년이 미디어 전문 교육자와 함께 자기 이야기를 작품으로 만드는 창작 교육입니다. 8회차 교육을 거쳐 작품을 완성하고, 공유회를 통해 친구들과 나눕니다.</p>
     <div class="progs">
       <article class="pg f-rap"><div class="pt"><span class="ico" aria-hidden="true">🎤</span><div><h3>랩으로 쓰는 나의 이야기</h3><span class="tg">음악</span></div></div><p>비트를 고르고 가사를 쓰고 직접 녹음해 한 곡을 완성합니다. 가사를 번역해 보고, 앨범 자켓을 만들고, 공유회로 마무리합니다.</p></article>
